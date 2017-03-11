@@ -40,6 +40,7 @@ import cz.cuni.mff.d3s.spl.data.readers.LineOrientedRevisionReader;
 import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
 import cz.cuni.mff.d3s.spl.interpretation.DistributionLearningInterpretationParallel;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
+import cz.cuni.mff.d3s.spl.interpretation.WelchTestWithEnlargedVariancesInterpretation;
 import cz.cuni.mff.d3s.spl.utils.ArrayUtils;
 
 public class SensitivityComparison {
@@ -119,6 +120,17 @@ public class SensitivityComparison {
 		@Override
 		public String getName(double alpha) {
 			return String.format("T.%04.2f", alpha);
+		}
+	}
+	
+	private static class TTestWithEnlargedVariances extends GenericStatisticalTest {
+		public TTestWithEnlargedVariances() {
+			interpretation = new WelchTestWithEnlargedVariancesInterpretation();
+		}
+
+		@Override
+		public String getName(double alpha) {
+			return String.format("TV.%04.2f", alpha);
 		}
 	}
 	
@@ -470,6 +482,7 @@ public class SensitivityComparison {
 		// Prepare the tests that will be run.
 		Collection<StatisticalTest> tests = new ArrayList<>();
 		tests.add(new TTest());
+		tests.add(new TTestWithEnlargedVariances());
 		tests.add(new LearningTest(testInternalExecutor, learningTestBeFast));
 		for (double tol : tolerancies) {
 			tests.add(new TolerantTest(new TTest(), tol));
