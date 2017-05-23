@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.cuni.mff.d3s</groupId>
+    <artifactId>spl-evaluation-java</artifactId>
+    <packaging>jar</packaging>
+    <name>spl-evaluation-java</name>
+    <version>1.0.0</version>
+    <description>
+        Stochastice Performance Logic is a formalism for capturing performance
+        assumptions. It is, for example, possible to capture assumption that
+        newer version of a function bar is faster than the previous version or
+        that library foobar is faster than library barfoo when rendering
+        antialiased text.
+
+        The purpose of this framework is to allow evaluation of SPL formulas
+        inside Java applications.
+    </description>
+    <url>http://d3s.mff.cuni.cz/research/development_awareness/</url>
+    <inceptionYear>2017</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <organization>
+        <name>D3S MFF, Charles University in Prague</name>
+        <url>http://d3s.mff.cuni.cz</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>vhorky</id>
+            <name>Vojtěch Horký</name>
+            <email>horky@d3s.mff.cuni.cz</email>
+            <url>http://d3s.mff.cuni.cz/~horky/</url>
+        </developer>
+        <developer>
+            <id>pstefan</id>
+            <name>Petr Stefan</name>
+            <email>ps@stdin.cz</email>
+            <url>https://ps.stdin.cz</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>cz.cuni.mff.d3s.spl.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javacc-maven-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>javacc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/java/cz/cuni/mff/d3s/spl/formula</sourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <doctitle>
+                        <![CDATA[<h1>
+			        	Stochastic Performance Logic (SPL) evaluation engine</h1>
+				        ]]>
+                    </doctitle>
+                    <bottom>
+                        <![CDATA[
+				        <i>Copyright &#169; 2015 — 2017
+				        Charles University in Prague.</i>
+				        ]]>
+                    </bottom>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.javacc</groupId>
+            <artifactId>javacc</artifactId>
+            <version>6.1.2</version>
+        </dependency>
+    </dependencies>
+
+</project>

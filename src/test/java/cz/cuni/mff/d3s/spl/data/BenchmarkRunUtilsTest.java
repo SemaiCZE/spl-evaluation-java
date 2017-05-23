@@ -80,7 +80,7 @@ public class BenchmarkRunUtilsTest {
 		}
 
 		@Override
-		public long apply(long sample) {
+		public Double apply(Double sample) {
 			return sample * mult;
 		}
 	}

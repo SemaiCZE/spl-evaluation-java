@@ -37,7 +37,7 @@ public class BenchmarkRunUtils  {
 	}
 	
 	public static interface Transformer {
-		public long apply(long sample);
+		public Double apply(Double sample);
 	}
 	
 	/** Compute mean of a run. */
@@ -137,7 +137,7 @@ public class BenchmarkRunUtils  {
 	
 	public static BenchmarkRun transform(final BenchmarkRun run, Transformer transformer) {
 		BenchmarkRunBuilder builder = new BenchmarkRunBuilder();
-		for (long sample : run.getSamples()) {
+		for (Double sample : run.getSamples()) {
 			builder.addSamples(transformer.apply(sample));
 		}
 		return builder.create();
