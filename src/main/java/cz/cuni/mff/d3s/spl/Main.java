@@ -6,7 +6,10 @@ import cz.cuni.mff.d3s.spl.data.readers.JmhJsonRevisionReader;
 import cz.cuni.mff.d3s.spl.data.readers.StructuredDataReader;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
+import cz.cuni.mff.d3s.spl.restapi.api.VersionApi;
+import cz.cuni.mff.d3s.spl.restapi.api.VersionsApi;
 import org.apache.commons.cli.*;
+import org.wso2.msf4j.MicroservicesRunner;
 
 import java.io.*;
 import java.net.URL;
@@ -32,75 +35,83 @@ public class Main {
 			String dataDir = line.getOptionValue("data-dir");
 			String revisionMapping = line.getOptionValue("revision-mapping");
 			boolean printUnknownOnly = line.hasOption("print-unknown");
+			boolean startServer = line.hasOption("server");
 
-			// Formulas are processed in order jar, file and command line.
-			// Latter options have higher priority and will override previous values.
-			// Pair of FQ benchmark name and corresponding SPL formula.
-			Map<String, String> formulas = new HashMap<>();
-			readJarFormulas(formulas, jarFormulas);
-			readFileFormulas(formulas, fileFormulas);
-			readCommandlineFormulas(formulas, cmdFormulas);
+			if (startServer) {
+				new MicroservicesRunner()
+						.deploy(new VersionApi(), new VersionsApi())
+						.start();
+			} else {
 
-			// Get custom mapping of revisions form file.
-			Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
+				// Formulas are processed in order jar, file and command line.
+				// Latter options have higher priority and will override previous values.
+				// Pair of FQ benchmark name and corresponding SPL formula.
+				Map<String, String> formulas = new HashMap<>();
+				readJarFormulas(formulas, jarFormulas);
+				readFileFormulas(formulas, fileFormulas);
+				readCommandlineFormulas(formulas, cmdFormulas);
 
-			DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
-			Map<String, List<Revision>> data = reader.readData(new String[] {dataDir});
+				// Get custom mapping of revisions form file.
+				Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
 
-			for (Map.Entry<String, List<Revision>> benchmarkItem : data.entrySet()) {
-				String benchmarkName = benchmarkItem.getKey();
-				String formulaString = null;
+				DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
+				Map<String, List<Revision>> data = reader.readData(new String[]{dataDir});
 
-				// Wildcard method identifier for all methods
-				if (formulas.containsKey("*")) {
-					formulaString = formulas.get("*");
-				}
+				for (Map.Entry<String, List<Revision>> benchmarkItem : data.entrySet()) {
+					String benchmarkName = benchmarkItem.getKey();
+					String formulaString = null;
 
-				// Method fully qualified name without additional params
-				String benchmarkBasename = benchmarkName.substring(0, benchmarkName.indexOf('@'));
-				if (formulas.containsKey(benchmarkBasename)) {
-					formulaString = formulas.get(benchmarkBasename);
-				}
-
-				// Method fully qualified name including additional info like measurement mode or execution params
-				if (formulas.containsKey(benchmarkName)) {
-					formulaString = formulas.get(benchmarkName);
-				}
-
-				if (formulaString == null) {
-					System.out.println("Skipping benchmark without formula: " + benchmarkItem.getKey());
-					continue;
-				}
-
-				Formula formula = SplFormula.create(formulaString);
-				formula.setInterpretation(new WelchTestInterpretation());
-
-				// get benchmark's revisions in better format for us
-				Map<String, DataSource> revisionMap = getRevisionMap(benchmarkItem.getValue());
-				boolean isUnknown = false;
-				// Bind variables to formula (according to revisions collection)
-				for (String variable : formula.getVariables()) {
-					// try if there is real revision of that name
-					if (revisionMap.containsKey(variable)) {
-						formula.bind(variable, revisionMap.get(variable));
+					// Wildcard method identifier for all methods
+					if (formulas.containsKey("*")) {
+						formulaString = formulas.get("*");
 					}
-					// else try to find another revision is custom mapping
-					else if (customRevisionMap.containsKey(variable)) {
-						formula.bind(variable, revisionMap.get(customRevisionMap.get(variable)));
-					}
-					// else there is no such revision
-					else {
-						System.out.printf("Benchmark: %s, formula: %s, unknown version: %s\n", benchmarkName,
-								formulaString, variable);
-						isUnknown = true;
-					}
-				}
 
-				// if we want only get missing versions, skip formula evaluating
-				// (or if there are some missing ones, evaluation make no sense)
-				if (!printUnknownOnly && !isUnknown) {
-					Result result = formula.evaluate(SIGNIFICANCE_LEVEL);
-					System.out.printf("Benchmark: %s, formula: %s, result: %s\n", benchmarkName, formulaString, result);
+					// Method fully qualified name without additional params
+					String benchmarkBasename = benchmarkName.substring(0, benchmarkName.indexOf('@'));
+					if (formulas.containsKey(benchmarkBasename)) {
+						formulaString = formulas.get(benchmarkBasename);
+					}
+
+					// Method fully qualified name including additional info like measurement mode or execution params
+					if (formulas.containsKey(benchmarkName)) {
+						formulaString = formulas.get(benchmarkName);
+					}
+
+					if (formulaString == null) {
+						System.out.println("Skipping benchmark without formula: " + benchmarkItem.getKey());
+						continue;
+					}
+
+					Formula formula = SplFormula.create(formulaString);
+					formula.setInterpretation(new WelchTestInterpretation());
+
+					// get benchmark's revisions in better format for us
+					Map<String, DataSource> revisionMap = getRevisionMap(benchmarkItem.getValue());
+					boolean isUnknown = false;
+					// Bind variables to formula (according to revisions collection)
+					for (String variable : formula.getVariables()) {
+						// try if there is real revision of that name
+						if (revisionMap.containsKey(variable)) {
+							formula.bind(variable, revisionMap.get(variable));
+						}
+						// else try to find another revision is custom mapping
+						else if (customRevisionMap.containsKey(variable)) {
+							formula.bind(variable, revisionMap.get(customRevisionMap.get(variable)));
+						}
+						// else there is no such revision
+						else {
+							System.out.printf("Benchmark: %s, formula: %s, unknown version: %s\n", benchmarkName,
+									formulaString, variable);
+							isUnknown = true;
+						}
+					}
+
+					// if we want only get missing versions, skip formula evaluating
+					// (or if there are some missing ones, evaluation make no sense)
+					if (!printUnknownOnly && !isUnknown) {
+						Result result = formula.evaluate(SIGNIFICANCE_LEVEL);
+						System.out.printf("Benchmark: %s, formula: %s, result: %s\n", benchmarkName, formulaString, result);
+					}
 				}
 			}
 		} catch (ParseException e) {
@@ -245,6 +256,12 @@ public class Main {
 		options.addOption(Option.builder("p")
 				.longOpt("print-unknown")
 				.desc("Print unknown revisions and exit.")
+				.build()
+		);
+
+		options.addOption(Option.builder("S")
+				.longOpt("server")
+				.desc("Start local server for data visualization.")
 				.build()
 		);
 
