@@ -21,6 +21,7 @@ public interface DataReader {
 	 * @return Map of benchmark/method/... name ("default" if
 	 *          the data doesn't provide custom name) and list
 	 *          of data revisions.
+	 * @throws ReaderException when there is an error while reading data
 	 */
 	Map<String, List<Revision>> readData(String[] args) throws ReaderException;
 

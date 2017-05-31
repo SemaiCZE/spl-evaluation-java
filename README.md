@@ -17,8 +17,8 @@ That is, you would use this library when you have your performance measured
 To compile and run the framework, the following software has to be available
 on your machine.
 
-* Java SDK >= 1.7.0
-* Apache Ant
+* Java SDK >= 1.8.0
+* Maven
 
 
 ## Compilation
@@ -26,24 +26,19 @@ on your machine.
 Simply execute
 
 ```{.sh}
-$ ant
+$ mvn package
 ```
 
-or
+
+to compile the program. For creating `.jar` package and add it to local Maven repository run
 
 ```{.sh}
-$ ant compile
+$ mvn install
 ```
 
-to compile the library. For creating `.jar` package run
+Resulting file is `target/spl-evaluation-java-1.0.0.jar`.
 
-```{.sh}
-$ ant package
-```
-
-Resulting file is `out/jars/spl-evaluation-java.jar`.
-
-All the generated files (classes, test reports) are stored in the `out/`
+All the generated files (classes, test reports) are stored in the `target/`
 directory.
 
 
@@ -94,22 +89,28 @@ $ java -jar spl-evaluation-java.jar -d ./demo-data/jmh -r /tmp/mapping.txt -j ./
 The attached unit tests can be compiled and executed by running
 
 ```{.sh}
-$ ant test
+$ mvn test
 ```
 
-Test report will be saved to `out/test-results/html/index.html`. There are 4
-failing test now because of not implemented features.
-
-
-## Documentation...
+## Documentation
 
 ... is not very detailed at the moment.
 
-Running `ant refdoc` will generate JavaDoc documentation with basic information
-on how to use this evaluation engine (see `out/javadoc/index.html`).
+Running `mvn site` will generate JavaDoc documentation with basic information
+on how to use this evaluation engine, unit test report and detailed project summary.
+To see it, open `target/site/index.html` in your browser.
 
 SPL was originally created for performance unit testing, more information
 is available at [SPL for Java page](http://d3s.mff.cuni.cz/software/spl-java)
 at [Department of Distributed and Dependable Systems](http://d3s.mff.cuni.cz/)
 ([Faculty of Mathematics and Physics, Charles University in Prague](http://mff.cuni.cz/)).
 
+## Demos
+
+Examples of how to use this project as a library are located in `src/demo/` directory. It contains separate `pom.xml`
+file to build them. **Note**, that the parent project must be installed in local Maven repository prior building demos
+(via `mvn install` command).
+
+There are currently two prepared scenarios, which can be run directly from Maven:
+- `mvn exec:java@regression-tester`
+- `mvn exec:java@sensitivity-comparison`

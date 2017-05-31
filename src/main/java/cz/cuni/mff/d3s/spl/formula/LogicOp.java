@@ -76,6 +76,6 @@ abstract class LogicOp implements Formula {
 
 	@Override
 	public Set<String> getVariables() {
-		return null;
+		return variables;
 	}
 }

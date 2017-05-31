@@ -662,7 +662,7 @@ public class SensitivityComparison {
 	private static String getSensitivityDataFilenames() {
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < 58; i++) {
-			result.append(String.format(" data/sensitivity/%02d.dat", i));
+			result.append(String.format(" resources/sample-data/sensitivity/%02d.dat", i));
 		}
 		return result.toString();
 	}

@@ -69,8 +69,8 @@ public class LineOrientedRevisionReader implements RevisionReader {
 
 		try {
 			while ((line = reader.readLine()) != null) {
-				// skip empty lines
-				if (!line.equals("")) {
+				// skip empty lines and comments
+				if (!line.equals("") && !line.startsWith("#")) {
 					long value = Long.parseLong(line);
 					run.addSamples(value);
 				}
