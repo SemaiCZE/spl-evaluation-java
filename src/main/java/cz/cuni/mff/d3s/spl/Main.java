@@ -6,8 +6,9 @@ import cz.cuni.mff.d3s.spl.data.readers.JmhJsonRevisionReader;
 import cz.cuni.mff.d3s.spl.data.readers.StructuredDataReader;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
-import cz.cuni.mff.d3s.spl.restapi.api.VersionApi;
-import cz.cuni.mff.d3s.spl.restapi.api.VersionsApi;
+import cz.cuni.mff.d3s.spl.restapi.TestsApi;
+import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
+import cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
 import org.apache.commons.cli.*;
 import org.wso2.msf4j.MicroservicesRunner;
 
@@ -38,8 +39,9 @@ public class Main {
 			boolean startServer = line.hasOption("server");
 
 			if (startServer) {
-				new MicroservicesRunner()
-						.deploy(new VersionApi(), new VersionsApi())
+				TestsApiServiceFactory.setService(new TestsApiServiceImpl("aaa"));
+				new MicroservicesRunner(8001)
+						.deploy(new TestsApi())
 						.start();
 			} else {
 
