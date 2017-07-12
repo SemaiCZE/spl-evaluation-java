@@ -24,9 +24,15 @@ import cz.cuni.mff.d3s.spl.DataSource;
  */
 public class BuilderDataSource implements DataSource {
 	private DataSnapshotBuilder builder;
+	private String units = null;
 
 	public BuilderDataSource(DataSnapshotBuilder builder) {
 		this.builder = builder;
+	}
+
+	public BuilderDataSource(DataSnapshotBuilder builder, String units) {
+		this.builder = builder;
+		this.units = units;
 	}
 
 	@Override
@@ -42,5 +48,14 @@ public class BuilderDataSource implements DataSource {
 	@Override
 	public DataSnapshot makeSnapshot(double skip) {
 		return builder.create(skip);
+	}
+
+	@Override
+	public String getUnits() {
+		return this.units;
+	}
+
+	public void setUnits(String units) {
+		this.units = units;
 	}
 }

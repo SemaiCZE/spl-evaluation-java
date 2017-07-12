@@ -138,6 +138,11 @@ public class RingDataSource implements DataSource {
 		return null;
 	}
 
+	@Override
+	public String getUnits() {
+		return null;
+	}
+
 	private DataSnapshotBuilder buildSnapshot() {
 		DataSnapshotBuilder builder = new DataSnapshotBuilder();
 		

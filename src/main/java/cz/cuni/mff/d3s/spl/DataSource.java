@@ -43,5 +43,11 @@ public interface DataSource {
 	 * @return Immutable snapshot of the data.
 	 */
 	DataSnapshot makeSnapshot(double skip);
+
+	/** Get units of the data.
+	 *
+	 * @return String representation of data units.
+	 */
+	String getUnits();
 }
 

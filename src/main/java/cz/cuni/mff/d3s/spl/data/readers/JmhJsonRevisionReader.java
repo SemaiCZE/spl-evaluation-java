@@ -111,6 +111,7 @@ public class JmhJsonRevisionReader implements RevisionReader {
 		String benchmarkEntryKey = String.format("%s@%s%s", benchmarkName, benchmarkMode, benchmarkParams);
 
 		JsonObject primaryMetric = benchmark.getJsonObject("primaryMetric");
+		String scoreUnit = primaryMetric.getString("scoreUnit");
 		JsonArray rawData = null;
 		JsonArray rawDataHistogram = null;
 		if (primaryMetric.containsKey("rawData")) {
@@ -118,7 +119,7 @@ public class JmhJsonRevisionReader implements RevisionReader {
 		} else if (primaryMetric.containsKey("rawDataHistogram")) {
 			rawDataHistogram = primaryMetric.getJsonArray("rawDataHistogram");
 		}
-		DataSource data = parseRawData(rawData, rawDataHistogram);
+		DataSource data = parseRawData(rawData, rawDataHistogram, scoreUnit);
 		return new AbstractMap.SimpleEntry<>(benchmarkEntryKey, data);
 	}
 
@@ -150,7 +151,7 @@ public class JmhJsonRevisionReader implements RevisionReader {
 	 *                         number of observations of this number.
 	 * @return Parsed data
 	 */
-	private static DataSource parseRawData(JsonArray rawData, JsonArray rawDataHistogram) throws ReaderException {
+	private static DataSource parseRawData(JsonArray rawData, JsonArray rawDataHistogram, String scoreUnit) throws ReaderException {
 		DataSnapshotBuilder builder = new DataSnapshotBuilder();
 
 		if (rawData != null) {
@@ -190,6 +191,6 @@ public class JmhJsonRevisionReader implements RevisionReader {
 			throw new ReaderException("One of \"rawData\" and \"rawDataHistogram\" must be empty, but not both");
 		}
 
-		return new BuilderDataSource(builder);
+		return new BuilderDataSource(builder, scoreUnit);
 	}
 }

@@ -35,9 +35,10 @@ public class TestsApiServiceImpl extends TestsApiService {
         if (data.containsKey(testId)) {
             Map<String, DataSource> revisions = DataUtils.getRevisionMap(data.get(testId));
             if (revisions.containsKey(revisionId)) {
-                DataSnapshot revisionData = revisions.get(revisionId).makeSnapshot();
+                DataSource revisionDataSource = revisions.get(revisionId);
+                DataSnapshot revisionData = revisionDataSource.makeSnapshot();
                 Data response = new Data();
-                response.setUnits("??");
+                response.setUnits(revisionDataSource.getUnits());
                 for (BenchmarkRun run : revisionData.getRuns()) {
                     List<Double> runData = new ArrayList<>();
                     run.getSamples().forEach(runData::add);
