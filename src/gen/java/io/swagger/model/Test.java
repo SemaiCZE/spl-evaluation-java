@@ -6,13 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Test
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaMSF4JServerCodegen", date = "2017-07-11T18:20:29.625+02:00")
-public class Test extends HashMap<String, String>  {
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaMSF4JServerCodegen", date = "2017-07-12T12:01:17.872+02:00")
+public class Test   {
   @JsonProperty("id")
   private String id = null;
 
@@ -24,6 +25,9 @@ public class Test extends HashMap<String, String>  {
 
   @JsonProperty("scoreUnit")
   private String scoreUnit = null;
+
+  @JsonProperty("optional")
+  private Map<String, String> optional = new HashMap<String, String>();
 
   public Test id(String id) {
     this.id = id;
@@ -97,6 +101,29 @@ public class Test extends HashMap<String, String>  {
     this.scoreUnit = scoreUnit;
   }
 
+  public Test optional(Map<String, String> optional) {
+    this.optional = optional;
+    return this;
+  }
+
+  public Test putOptionalItem(String key, String optionalItem) {
+    this.optional.put(key, optionalItem);
+    return this;
+  }
+
+   /**
+   * Optional test metadata (execution parameters, etc.)
+   * @return optional
+  **/
+  @ApiModelProperty(value = "Optional test metadata (execution parameters, etc.)")
+  public Map<String, String> getOptional() {
+    return optional;
+  }
+
+  public void setOptional(Map<String, String> optional) {
+    this.optional = optional;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -111,23 +138,24 @@ public class Test extends HashMap<String, String>  {
         Objects.equals(this.name, test.name) &&
         Objects.equals(this.score, test.score) &&
         Objects.equals(this.scoreUnit, test.scoreUnit) &&
-        super.equals(o);
+        Objects.equals(this.optional, test.optional);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, score, scoreUnit, super.hashCode());
+    return Objects.hash(id, name, score, scoreUnit, optional);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Test {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    score: ").append(toIndentedString(score)).append("\n");
     sb.append("    scoreUnit: ").append(toIndentedString(scoreUnit)).append("\n");
+    sb.append("    optional: ").append(toIndentedString(optional)).append("\n");
     sb.append("}");
     return sb.toString();
   }

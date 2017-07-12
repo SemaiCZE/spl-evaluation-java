@@ -151,23 +151,26 @@ public class JmhJsonRevisionReader implements RevisionReader {
 	 * @return Parsed data
 	 */
 	private static DataSource parseRawData(JsonArray rawData, JsonArray rawDataHistogram) throws ReaderException {
-		BenchmarkRunBuilder run = new BenchmarkRunBuilder();
+		DataSnapshotBuilder builder = new DataSnapshotBuilder();
 
 		if (rawData != null) {
 			// process rawData
 
 			// for each fork
 			for (JsonValue fork : rawData) {
+				BenchmarkRunBuilder run = new BenchmarkRunBuilder();
 				// for each iteration value
 				for (JsonValue value : (JsonArray)fork) {
 					run.addSamples(((JsonNumber)value).doubleValue());
 				}
+				builder.addRun(run.create());
 			}
 		} else if (rawDataHistogram != null) {
 			// process rawDataHistogram
 
 			// for each fork
 			for (JsonValue fork : rawDataHistogram) {
+				BenchmarkRunBuilder run = new BenchmarkRunBuilder();
 				// for each iteration
 				for (JsonValue iteration : (JsonArray)fork) {
 					// for each sample
@@ -180,15 +183,12 @@ public class JmhJsonRevisionReader implements RevisionReader {
 						}
 					}
 				}
+				builder.addRun(run.create());
 			}
 		} else {
 			// corrupted invariant
 			throw new ReaderException("One of \"rawData\" and \"rawDataHistogram\" must be empty, but not both");
 		}
-
-		DataSnapshotBuilder builder = new DataSnapshotBuilder();
-		BenchmarkRun benchmarkRun = run.create();
-		builder.addRun(benchmarkRun);
 
 		return new BuilderDataSource(builder);
 	}

@@ -124,9 +124,12 @@ definitions:
         type: string
         description: Unit of the score above
         example: ops/s
-    additionalProperties:
-      type: string
-      description: Optional key-value metadata
+      optional:
+        type: object
+        description: Optional test metadata (execution parameters, etc.)
+        additionalProperties:
+          type: string
+          description: Key-value data
   Data:
     type: object
     required:

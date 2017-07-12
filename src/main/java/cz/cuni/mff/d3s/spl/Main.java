@@ -9,6 +9,7 @@ import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
 import cz.cuni.mff.d3s.spl.restapi.TestsApi;
 import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
 import cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
+import cz.cuni.mff.d3s.spl.utils.DataUtils;
 import org.apache.commons.cli.*;
 import org.wso2.msf4j.MicroservicesRunner;
 
@@ -38,26 +39,27 @@ public class Main {
 			boolean printUnknownOnly = line.hasOption("print-unknown");
 			boolean startServer = line.hasOption("server");
 
+
+			// Formulas are processed in order jar, file and command line.
+			// Latter options have higher priority and will override previous values.
+			// Pair of FQ benchmark name and corresponding SPL formula.
+			Map<String, String> formulas = new HashMap<>();
+			readJarFormulas(formulas, jarFormulas);
+			readFileFormulas(formulas, fileFormulas);
+			readCommandlineFormulas(formulas, cmdFormulas);
+
+			DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
+			Map<String, List<Revision>> data = reader.readData(new String[]{dataDir});
+
 			if (startServer) {
-				TestsApiServiceFactory.setService(new TestsApiServiceImpl("aaa"));
-				new MicroservicesRunner(8001)
+				// Start REST API server to allow fetching data from visualization tools
+				TestsApiServiceFactory.setService(new TestsApiServiceImpl(data));
+				new MicroservicesRunner(42000)
 						.deploy(new TestsApi())
 						.start();
 			} else {
-
-				// Formulas are processed in order jar, file and command line.
-				// Latter options have higher priority and will override previous values.
-				// Pair of FQ benchmark name and corresponding SPL formula.
-				Map<String, String> formulas = new HashMap<>();
-				readJarFormulas(formulas, jarFormulas);
-				readFileFormulas(formulas, fileFormulas);
-				readCommandlineFormulas(formulas, cmdFormulas);
-
 				// Get custom mapping of revisions form file.
 				Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
-
-				DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
-				Map<String, List<Revision>> data = reader.readData(new String[]{dataDir});
 
 				for (Map.Entry<String, List<Revision>> benchmarkItem : data.entrySet()) {
 					String benchmarkName = benchmarkItem.getKey();
@@ -88,7 +90,7 @@ public class Main {
 					formula.setInterpretation(new WelchTestInterpretation());
 
 					// get benchmark's revisions in better format for us
-					Map<String, DataSource> revisionMap = getRevisionMap(benchmarkItem.getValue());
+					Map<String, DataSource> revisionMap = DataUtils.getRevisionMap(benchmarkItem.getValue());
 					boolean isUnknown = false;
 					// Bind variables to formula (according to revisions collection)
 					for (String variable : formula.getVariables()) {
@@ -123,14 +125,6 @@ public class Main {
 		} catch (DataReader.ReaderException e) {
 			System.err.println("Cannot read measured data. Reason: " + e.getMessage());
 		}
-	}
-
-	private static Map<String, DataSource> getRevisionMap(List<Revision> revisions) {
-		Map<String, DataSource> result = new HashMap<>();
-		for (Revision rev : revisions) {
-			result.put(rev.name, rev.data);
-		}
-		return result;
 	}
 
 	private static void readJarFormulas(Map<String, String> formulas, String jarFormulas) {
