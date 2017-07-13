@@ -16,26 +16,23 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Arrays;
-import java.util.Collection;
-
+import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.data.DataSource;
+import cz.cuni.mff.d3s.spl.formula.SplFormula.SplParseException;
+import cz.cuni.mff.d3s.spl.interpretation.Interpretation;
+import cz.cuni.mff.d3s.spl.tests.DataForTest;
+import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.formula.SplFormula;
-import cz.cuni.mff.d3s.spl.formula.SplFormula.SplParseException;
-import cz.cuni.mff.d3s.spl.tests.DataForTest;
-import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class FormulaParserTest {

@@ -16,17 +16,12 @@
  */
 package cz.cuni.mff.d3s.spl.demo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-
-import cz.cuni.mff.d3s.spl.Formula;
 import cz.cuni.mff.d3s.spl.Result;
 import cz.cuni.mff.d3s.spl.data.RingDataSource;
+import cz.cuni.mff.d3s.spl.formula.Formula;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
+
+import java.util.*;
 
 /** Simple example for using SPL evaluation to determine which
  * of the collections is the fastest.

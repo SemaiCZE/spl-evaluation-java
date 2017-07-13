@@ -16,8 +16,6 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import cz.cuni.mff.d3s.spl.Formula;
-
 /** Wrapper for parsing an SPL formula.
  *
  */

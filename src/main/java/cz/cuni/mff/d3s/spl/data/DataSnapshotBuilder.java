@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-
 
 /** Helper class for creating data snapshots.
  *

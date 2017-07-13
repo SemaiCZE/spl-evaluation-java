@@ -115,16 +115,7 @@ definitions:
         type: string
         description: 'Name of test case, usually full method name'
         example: cz.stdin.ps.SampleTest.testMethod
-      score:
-        type: number
-        format: double
-        description: 'Test score, usually mean or median'
-        example: 109987683.34366429
-      scoreUnit:
-        type: string
-        description: Unit of the score above
-        example: ops/s
-      optional:
+      metadata:
         type: object
         description: Optional test metadata (execution parameters, etc.)
         additionalProperties:

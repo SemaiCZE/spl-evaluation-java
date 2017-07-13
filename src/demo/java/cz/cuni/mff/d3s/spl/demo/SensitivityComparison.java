@@ -16,32 +16,18 @@
  */
 package cz.cuni.mff.d3s.spl.demo;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import cz.cuni.mff.d3s.spl.data.*;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader;
+import cz.cuni.mff.d3s.spl.data.readers.LineOrientedRevisionReader;
+import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
+import cz.cuni.mff.d3s.spl.interpretation.*;
+import cz.cuni.mff.d3s.spl.utils.ArrayUtils;
+
+import java.io.*;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import cz.cuni.mff.d3s.spl.*;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunBuilder;
-import cz.cuni.mff.d3s.spl.data.DataSnapshotBuilder;
-import cz.cuni.mff.d3s.spl.data.readers.LineOrientedRevisionReader;
-import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
-import cz.cuni.mff.d3s.spl.interpretation.DistributionLearningInterpretationParallel;
-import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
-import cz.cuni.mff.d3s.spl.interpretation.WelchTestWithEnlargedVariancesInterpretation;
-import cz.cuni.mff.d3s.spl.utils.ArrayUtils;
 
 public class SensitivityComparison {
 	private static enum ComparisonOperator {
@@ -74,7 +60,7 @@ public class SensitivityComparison {
 		 * @return Boolean array, a position is true if the test would reject at the corresponding confidence level.
 		 */
 		public boolean[] getRejects(DataSnapshot left, ComparisonOperator op,
-				DataSnapshot right, double[] alphas);
+		                            DataSnapshot right, double[] alphas);
 
 		public String getName(double alpha);
 	}
@@ -516,8 +502,8 @@ public class SensitivityComparison {
 			
 			Collection<File> leftFiles = new ArrayList<>();
 			Collection<File> rightFiles = new ArrayList<>();
-			Map<String, DataSource> leftSource = null;
-			Map<String, DataSource> rightSource = null;
+			Map<DataInfo, DataSource> leftSource = null;
+			Map<DataInfo, DataSource> rightSource = null;
 			ComparisonOperator cmpOp = null;
 			int cmpOpCount = 0;
 
@@ -549,8 +535,8 @@ public class SensitivityComparison {
 				e.printStackTrace();
 			}
 
-			DataSnapshot left = leftSource.get("default").makeSnapshot(skip);
-			DataSnapshot right = rightSource.get("default").makeSnapshot(skip);
+			DataSnapshot left = leftSource.get(DataInfo.defaultInstance).makeSnapshot(skip);
+			DataSnapshot right = rightSource.get(DataInfo.defaultInstance).makeSnapshot(skip);
 			
 			if ((left.getRunCount() == 0) || (right.getRunCount() == 0)) {
 				System.err.printf("There are no sources on %s.\n", line);

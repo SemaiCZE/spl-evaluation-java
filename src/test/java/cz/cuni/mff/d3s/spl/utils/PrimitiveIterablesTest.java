@@ -16,9 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.utils;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PrimitiveIterablesTest {
 	private static void assertIterable(double... values) {

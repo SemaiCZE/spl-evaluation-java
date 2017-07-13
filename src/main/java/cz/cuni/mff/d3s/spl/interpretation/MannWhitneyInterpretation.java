@@ -16,14 +16,11 @@
  */
 package cz.cuni.mff.d3s.spl.interpretation;
 
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRunUtils;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.inference.MannWhitneyUTest;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunUtils;
 
 /** SPL interpretation based on Mann-Whitney test.
  * 

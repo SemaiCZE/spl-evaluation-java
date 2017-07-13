@@ -1,5 +1,6 @@
-package cz.cuni.mff.d3s.spl;
+package cz.cuni.mff.d3s.spl.data.readers;
 
+import cz.cuni.mff.d3s.spl.data.DataInfo;
 import cz.cuni.mff.d3s.spl.data.Revision;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public interface DataReader {
 	 * Reads measured data.
 	 *
 	 * @param args Specific arguments for each reader.
-	 * @return Map of benchmark/method/... name ("default" if
-	 *          the data doesn't provide custom name) and list
+	 * @return Map of benchmark/method/... info (only 'id' property is required,
+	 *          will be "default" if the data doesn't provide custom name) and list
 	 *          of data revisions.
 	 * @throws ReaderException when there is an error while reading data
 	 */
-	Map<String, List<Revision>> readData(String[] args) throws ReaderException;
+	Map<DataInfo, List<Revision>> readData(String[] args) throws ReaderException;
 
 
 	/**

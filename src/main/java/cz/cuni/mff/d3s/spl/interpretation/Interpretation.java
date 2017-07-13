@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl;
+package cz.cuni.mff.d3s.spl.interpretation;
+
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
 
 /** Encapsulates mathematical methods and approaches needed for evaluation
  * of SPL formulas.

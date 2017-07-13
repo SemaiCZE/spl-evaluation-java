@@ -16,16 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import static org.junit.Assert.assertEquals;
-
+import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.interpretation.Interpretation;
+import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
+import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class LogicOpTestBase {

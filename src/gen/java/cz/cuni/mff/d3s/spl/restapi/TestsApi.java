@@ -1,27 +1,15 @@
 package cz.cuni.mff.d3s.spl.restapi;
 
-import io.swagger.model.*;
-import cz.cuni.mff.d3s.spl.restapi.TestsApiService;
 import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
-
 import io.swagger.annotations.ApiParam;
-import io.swagger.jaxrs.*;
-
 import io.swagger.model.Data;
 import io.swagger.model.Test;
 
-import java.util.List;
-import cz.cuni.mff.d3s.spl.restapi.NotFoundException;
-
-import java.io.InputStream;
-
-import org.wso2.msf4j.formparam.FormDataParam;
-import org.wso2.msf4j.formparam.FileInfo;
-
-import javax.ws.rs.core.Context;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.*;
 
 @Path("/tests")
 

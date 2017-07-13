@@ -1,12 +1,8 @@
 package cz.cuni.mff.d3s.spl.data.readers;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunBuilder;
-import cz.cuni.mff.d3s.spl.data.BuilderDataSource;
-import cz.cuni.mff.d3s.spl.data.DataSnapshotBuilder;
+import cz.cuni.mff.d3s.spl.data.*;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader.ReaderException;
 import cz.cuni.mff.d3s.spl.utils.Factory;
-import cz.cuni.mff.d3s.spl.DataReader.ReaderException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -30,7 +26,7 @@ public class LineOrientedRevisionReader implements RevisionReader {
 	 * @throws ReaderException On reading or parsing error
 	 */
 	@Override
-	public Map<String, DataSource> readRevision(File... files) throws ReaderException {
+	public Map<DataInfo, DataSource> readRevision(File... files) throws ReaderException {
 		DataSnapshotBuilder snapshotBuilder = new DataSnapshotBuilder();
 		for (File file : files) {
 	    	try {
@@ -41,8 +37,8 @@ public class LineOrientedRevisionReader implements RevisionReader {
 	    	}
 		}
 
-		HashMap<String, DataSource> result = new HashMap<>();
-		result.put("default", new BuilderDataSource(snapshotBuilder));
+		HashMap<DataInfo, DataSource> result = new HashMap<>();
+		result.put(DataInfo.defaultInstance, new BuilderDataSource(snapshotBuilder));
 		return result;
 	}
 

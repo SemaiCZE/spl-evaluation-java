@@ -16,18 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import java.util.Arrays;
-import java.util.Collection;
-
+import cz.cuni.mff.d3s.spl.Result;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.formula.LogicConst;
-import cz.cuni.mff.d3s.spl.formula.LogicOr;
+import java.util.Arrays;
+import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class LogicOrTest extends LogicOpTestBase {

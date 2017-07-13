@@ -16,7 +16,6 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import cz.cuni.mff.d3s.spl.Formula;
 import cz.cuni.mff.d3s.spl.Result;
 
 /** Formula node: disjunction of two subformulas.

@@ -15,7 +15,6 @@
  * limitations under the License.
  */package cz.cuni.mff.d3s.spl.formula;
 
-import cz.cuni.mff.d3s.spl.Formula;
 import cz.cuni.mff.d3s.spl.Result;
 
 /** Formula node: conjunction of two subformulas.

@@ -16,7 +16,7 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import cz.cuni.mff.d3s.spl.Interpretation;
+import cz.cuni.mff.d3s.spl.interpretation.Interpretation;
 import cz.cuni.mff.d3s.spl.interpretation.KindergartenInterpretation;
 
 /** Wrapper class for holding formula defaults.

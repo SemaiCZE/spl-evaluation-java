@@ -16,15 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.tests;
 
-import static org.junit.Assert.*;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
+import org.junit.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
+import static org.junit.Assert.*;
 
 @Ignore
 public class TestUtils {

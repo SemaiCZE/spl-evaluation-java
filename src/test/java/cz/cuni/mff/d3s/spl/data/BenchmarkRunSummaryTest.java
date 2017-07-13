@@ -16,11 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
+import static org.junit.Assert.assertEquals;
 
 public class BenchmarkRunSummaryTest {
 	

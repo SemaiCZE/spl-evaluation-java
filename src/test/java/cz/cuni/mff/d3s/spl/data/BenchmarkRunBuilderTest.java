@@ -16,11 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
+import cz.cuni.mff.d3s.spl.tests.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.tests.TestUtils;
 
 public class BenchmarkRunBuilderTest {
 	

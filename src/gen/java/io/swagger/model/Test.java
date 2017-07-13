@@ -1,13 +1,11 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Test
@@ -20,14 +18,8 @@ public class Test   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("score")
-  private Double score = null;
-
-  @JsonProperty("scoreUnit")
-  private String scoreUnit = null;
-
-  @JsonProperty("optional")
-  private Map<String, String> optional = new HashMap<String, String>();
+  @JsonProperty("metadata")
+  private Map<String, String> metadata = new HashMap<String, String>();
 
   public Test id(String id) {
     this.id = id;
@@ -65,49 +57,13 @@ public class Test   {
     this.name = name;
   }
 
-  public Test score(Double score) {
-    this.score = score;
+  public Test metadata(Map<String, String> metadata) {
+    this.metadata = metadata;
     return this;
   }
 
-   /**
-   * Test score, usually mean or median
-   * @return score
-  **/
-  @ApiModelProperty(example = "1.0998768334366429E8", value = "Test score, usually mean or median")
-  public Double getScore() {
-    return score;
-  }
-
-  public void setScore(Double score) {
-    this.score = score;
-  }
-
-  public Test scoreUnit(String scoreUnit) {
-    this.scoreUnit = scoreUnit;
-    return this;
-  }
-
-   /**
-   * Unit of the score above
-   * @return scoreUnit
-  **/
-  @ApiModelProperty(example = "ops/s", value = "Unit of the score above")
-  public String getScoreUnit() {
-    return scoreUnit;
-  }
-
-  public void setScoreUnit(String scoreUnit) {
-    this.scoreUnit = scoreUnit;
-  }
-
-  public Test optional(Map<String, String> optional) {
-    this.optional = optional;
-    return this;
-  }
-
-  public Test putOptionalItem(String key, String optionalItem) {
-    this.optional.put(key, optionalItem);
+  public Test putMetadataItem(String key, String metadataItem) {
+    this.metadata.put(key, metadataItem);
     return this;
   }
 
@@ -116,12 +72,12 @@ public class Test   {
    * @return optional
   **/
   @ApiModelProperty(value = "Optional test metadata (execution parameters, etc.)")
-  public Map<String, String> getOptional() {
-    return optional;
+  public Map<String, String> getMetadata() {
+    return metadata;
   }
 
-  public void setOptional(Map<String, String> optional) {
-    this.optional = optional;
+  public void setMetadata(Map<String, String> metadata) {
+    this.metadata = metadata;
   }
 
 
@@ -136,14 +92,12 @@ public class Test   {
     Test test = (Test) o;
     return Objects.equals(this.id, test.id) &&
         Objects.equals(this.name, test.name) &&
-        Objects.equals(this.score, test.score) &&
-        Objects.equals(this.scoreUnit, test.scoreUnit) &&
-        Objects.equals(this.optional, test.optional);
+        Objects.equals(this.metadata, test.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, score, scoreUnit, optional);
+    return Objects.hash(id, name, metadata);
   }
 
   @Override
@@ -153,9 +107,7 @@ public class Test   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    score: ").append(toIndentedString(score)).append("\n");
-    sb.append("    scoreUnit: ").append(toIndentedString(scoreUnit)).append("\n");
-    sb.append("    optional: ").append(toIndentedString(optional)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("}");
     return sb.toString();
   }

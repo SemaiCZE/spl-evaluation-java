@@ -1,12 +1,15 @@
 package cz.cuni.mff.d3s.spl.data.readers;
 
-import cz.cuni.mff.d3s.spl.DataReader;
-import cz.cuni.mff.d3s.spl.DataSource;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 import cz.cuni.mff.d3s.spl.data.Revision;
 import cz.cuni.mff.d3s.spl.utils.Factory;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Data reader from plain text formats. See readData() documentation for
@@ -42,18 +45,18 @@ public class PlainDataReader<T extends RevisionReader> implements DataReader {
 	 *          unit as value.
 	 */
 	@Override
-	public Map<String, List<Revision>> readData(String[] args) throws ReaderException {
-		Map<String, List<Revision>> data = new HashMap<>();
-		data.put("default", new LinkedList<>());
+	public Map<DataInfo, List<Revision>> readData(String[] args) throws ReaderException {
+		Map<DataInfo, List<Revision>> data = new HashMap<>();
+		data.put(DataInfo.defaultInstance, new LinkedList<>());
 
 		for (String dirname : args) {
 			File dir = new File(dirname);
 
 			System.out.printf("Reading data from %s...", dirname);
-			Map<String, DataSource> revision = reader.readRevision(dir.listFiles());
-			System.out.printf(" ok, %d run(s).\n", revision.get("default").makeSnapshot().getRunCount());
+			Map<DataInfo, DataSource> revision = reader.readRevision(dir.listFiles());
+			System.out.printf(" ok, %d run(s).\n", revision.get(DataInfo.defaultInstance).makeSnapshot().getRunCount());
 
-			data.get("default").add(new Revision(dir.getName(), revision.get("default")));
+			data.get(DataInfo.defaultInstance).add(new Revision(dir.getName(), revision.get(DataInfo.defaultInstance)));
 		}
 
 		return data;

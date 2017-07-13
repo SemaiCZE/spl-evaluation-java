@@ -1,11 +1,12 @@
 package cz.cuni.mff.d3s.spl.demo;
 
-import cz.cuni.mff.d3s.spl.DataReader;
-import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.Formula;
 import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader;
 import cz.cuni.mff.d3s.spl.data.readers.JmhJsonRevisionReader;
+import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
+import cz.cuni.mff.d3s.spl.formula.Formula;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
 
@@ -49,7 +50,7 @@ public class JmhRawDataTester {
 		}
 
 		// name of benchmarked method and list of data for all revisions
-		Map<String, List<Revision>> data = new HashMap<>();
+		Map<DataInfo, List<Revision>> data = new HashMap<>();
 
 		File dir = new File(directory[0]);
 		File[] files = dir.listFiles();
@@ -59,7 +60,7 @@ public class JmhRawDataTester {
 			System.out.printf("Reading data from %s revision...", file.getName());
 
 			RevisionReader reader = new JmhJsonRevisionReader();
-			Map<String, DataSource> revisionData = null;
+			Map<DataInfo, DataSource> revisionData = null;
 			try {
 				revisionData = reader.readRevision(file);
 			} catch (DataReader.ReaderException e) {
@@ -67,7 +68,7 @@ public class JmhRawDataTester {
 				System.exit(2);
 			}
 
-			for (Map.Entry<String, DataSource> benchmark : revisionData.entrySet()) {
+			for (Map.Entry<DataInfo, DataSource> benchmark : revisionData.entrySet()) {
 				if (!data.containsKey(benchmark.getKey())) {
 					data.put(benchmark.getKey(), new LinkedList<>());
 				}
@@ -83,8 +84,8 @@ public class JmhRawDataTester {
 		System.out.printf("Looking for regressions and suspicious data...\n");
 
 		// for each test method
-		for (Map.Entry<String, List<Revision>> benchmark : data.entrySet()) {
-			System.out.printf(" benchmark: %s...\n", benchmark.getKey());
+		for (Map.Entry<DataInfo, List<Revision>> benchmark : data.entrySet()) {
+			System.out.printf(" benchmark: %s...\n", benchmark.getKey().getId());
 
 			// for each pair of following measurements check regression
 			List<Revision> revisions = benchmark.getValue();

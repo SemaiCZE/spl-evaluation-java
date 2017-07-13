@@ -19,8 +19,6 @@ package cz.cuni.mff.d3s.spl.data;
 import java.util.LinkedList;
 import java.util.List;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-
 /** Helper class for creating immutable benchmark run.
  *
  */

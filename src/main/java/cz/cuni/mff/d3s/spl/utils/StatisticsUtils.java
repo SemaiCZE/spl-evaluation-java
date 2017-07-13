@@ -16,10 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.utils;
 
-import java.util.Random;
-
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
+
+import java.util.Random;
 
 /** Helper methods for common statistics.
  */

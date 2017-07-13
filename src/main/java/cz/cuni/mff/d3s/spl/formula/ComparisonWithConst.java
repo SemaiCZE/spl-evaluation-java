@@ -16,15 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
+import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.data.DataSource;
+import cz.cuni.mff.d3s.spl.interpretation.ComparisonResult;
+import cz.cuni.mff.d3s.spl.interpretation.Interpretation;
+
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.Result;
 
 /** Formula node: actual comparison of a data set with a constant.
 *

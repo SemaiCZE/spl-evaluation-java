@@ -18,14 +18,13 @@
  */
 package cz.cuni.mff.d3s.spl.tests;
 
-import java.util.Arrays;
-
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRunBuilder;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 import org.junit.Ignore;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunBuilder;
+import java.util.Arrays;
 
 @Ignore
 public class DataForTest implements DataSource {

@@ -16,9 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.utils;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class StatisticsUtilsTest {
 	private static final double EPSILON = 0.00001;

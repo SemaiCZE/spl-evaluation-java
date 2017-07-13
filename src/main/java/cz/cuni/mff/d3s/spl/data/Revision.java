@@ -1,7 +1,5 @@
 package cz.cuni.mff.d3s.spl.data;
 
-import cz.cuni.mff.d3s.spl.DataSource;
-
 /**
  * One data revision.
  */

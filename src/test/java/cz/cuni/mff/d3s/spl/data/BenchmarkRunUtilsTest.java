@@ -16,18 +16,16 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
-import static org.junit.Assert.*;
+import cz.cuni.mff.d3s.spl.tests.TestUtils;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.tests.TestUtils;
+import static org.junit.Assert.assertEquals;
 
 public class BenchmarkRunUtilsTest {
 	private static final Iterable<BenchmarkRun> NO_RUNS = new ArrayList<BenchmarkRun>();

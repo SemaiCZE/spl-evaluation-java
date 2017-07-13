@@ -1,12 +1,8 @@
 package cz.cuni.mff.d3s.spl.data.readers;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunBuilder;
-import cz.cuni.mff.d3s.spl.data.BuilderDataSource;
-import cz.cuni.mff.d3s.spl.data.DataSnapshotBuilder;
+import cz.cuni.mff.d3s.spl.data.*;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader.ReaderException;
 import cz.cuni.mff.d3s.spl.utils.Factory;
-import cz.cuni.mff.d3s.spl.DataReader.ReaderException;
 
 import javax.json.*;
 import javax.json.stream.JsonParsingException;
@@ -35,12 +31,12 @@ public class JmhJsonRevisionReader implements RevisionReader {
 	 * unique. File format is new JMH JSON format.
 	 *
 	 * @param files Input files with raw data
-	 * @return Processed data with benchmark names as keys with corresponding values
+	 * @return Processed data with benchmark info as keys with corresponding values
 	 * @throws ReaderException On reading or parsing error
 	 */
 	@Override
-	public Map<String, DataSource> readRevision(File... files) throws ReaderException {
-		Map<String, DataSource> result = new HashMap<>();
+	public Map<DataInfo, DataSource> readRevision(File... files) throws ReaderException {
+		Map<DataInfo, DataSource> result = new HashMap<>();
 
 		for (File file : files) {
 			try {
@@ -48,7 +44,7 @@ public class JmhJsonRevisionReader implements RevisionReader {
 				JsonArray benchmarks = jsonReader.readArray();
 
 				for (JsonValue benchmark : benchmarks) {
-					Map.Entry<String, DataSource> benchmarkData = getBenchmarkData((JsonObject) benchmark);
+					Map.Entry<DataInfo, DataSource> benchmarkData = getBenchmarkData((JsonObject) benchmark);
 					if (result.containsKey(benchmarkData.getKey())) {
 						//throw new ReaderException("Duplicate benchmark key: " + benchmarkData.getKey());
 						DataSource mergedData = mergeBenchmarkData(benchmarkData.getValue(),
@@ -101,14 +97,18 @@ public class JmhJsonRevisionReader implements RevisionReader {
 	 * @param benchmark Json object (dictionary) with one benchmark data
 	 * @return Parsed data
 	 */
-	private static Map.Entry<String, DataSource> getBenchmarkData(JsonObject benchmark) throws ReaderException {
+	private static Map.Entry<DataInfo, DataSource> getBenchmarkData(JsonObject benchmark) throws ReaderException {
 		String benchmarkName = benchmark.getString("benchmark");
 		String benchmarkMode = benchmark.getString("mode");
-		String benchmarkParams = "";
+		Map<String, String> benchmarkParams = new HashMap<>();
 		if (benchmark.containsKey("params")) {
 			benchmarkParams = getBenchmarkParams(benchmark.getJsonObject("params"));
 		}
-		String benchmarkEntryKey = String.format("%s@%s%s", benchmarkName, benchmarkMode, benchmarkParams);
+		Map<String, String> metadata = getBenchmarkMetadata(benchmark);
+		metadata.putAll(benchmarkParams);
+		String benchmarkEncodedParams = encodeBenchmarkParams(benchmarkParams);
+		String benchmarkEntryId = String.format("%s@%s%s", benchmarkName, benchmarkMode, benchmarkEncodedParams);
+		DataInfo benchmarkEntryKey = new DataInfo(benchmarkEntryId, benchmarkName, metadata);
 
 		JsonObject primaryMetric = benchmark.getJsonObject("primaryMetric");
 		String scoreUnit = primaryMetric.getString("scoreUnit");
@@ -124,19 +124,53 @@ public class JmhJsonRevisionReader implements RevisionReader {
 	}
 
 	/**
+	 * Get benchmark metadata.
+	 *
+	 * @param benchmark Json object (dictionary) with one benchmark data
+	 * @return Parsed benchmark metadata as map
+	 */
+	private static Map<String, String> getBenchmarkMetadata(JsonObject benchmark) {
+		String keys[] = new String[]{"mode", "threads", "forks", "warmupIterations", "warmupTime",
+				"warmupBatchSize", "measurementIterations", "measurementTime", "measurementBatchSize"};
+		Map<String, String> result = new HashMap<>();
+		for (String key : keys) {
+			try {
+				String value = benchmark.get(key).toString();
+				value = value.replace("\"", "");
+				result.put(key, value);
+			} catch (NullPointerException ignored) {}
+		}
+		return result;
+	}
+
+	/**
 	 * Get params with which the benchmark was run.
 	 *
 	 * @param params Json object containing all params (the "params" key from JMH json)
-	 * @return Params with format "@par1=val1@par2=val2"
+	 * @return Params as map
 	 */
-	private static String getBenchmarkParams(JsonObject params) {
+	private static Map<String, String> getBenchmarkParams(JsonObject params) {
+		Map<String, String> result = new HashMap<>();
+		for (String param : params.keySet()) {
+			String value = params.getString(param);
+			result.put("P-" + param, value);
+		}
+		return result;
+	}
+
+	/**
+	 * Encode params with which the benchmark was run into one string.
+	 *
+	 * @param params Map containing all params (the "params" key from JMH json)
+	 * @return Encoded params with format "@par1=val1@par2=val2"
+	 */
+	private static String encodeBenchmarkParams(Map<String, String> params) {
 		StringBuilder result = new StringBuilder();
-		for (String item : params.keySet()) {
-			String value = params.getString(item);
+		for (Map.Entry<String, String> item : params.entrySet()) {
 			result.append("@");
-			result.append(item);
+			result.append(item.getKey());
 			result.append("=");
-			result.append(value);
+			result.append(item.getValue());
 		}
 		return result.toString();
 	}

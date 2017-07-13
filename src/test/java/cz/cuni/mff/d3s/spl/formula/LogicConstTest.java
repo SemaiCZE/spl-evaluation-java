@@ -16,14 +16,12 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.formula.LogicConst;
 import cz.cuni.mff.d3s.spl.tests.DataForTest;
 import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class LogicConstTest {
 

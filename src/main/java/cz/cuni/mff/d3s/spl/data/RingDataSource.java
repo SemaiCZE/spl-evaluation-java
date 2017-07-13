@@ -16,12 +16,9 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
-import java.util.Collection;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.DataSource;
 import cz.cuni.mff.d3s.spl.utils.RingBuffer;
+
+import java.util.Collection;
 
 /** Ring-buffer based data source.
  *

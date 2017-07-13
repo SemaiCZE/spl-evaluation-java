@@ -16,11 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
+import cz.cuni.mff.d3s.spl.utils.StatisticsUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.utils.StatisticsUtils;
 
 /** Helper methods for working with the BenchmarkRun interface.
  */

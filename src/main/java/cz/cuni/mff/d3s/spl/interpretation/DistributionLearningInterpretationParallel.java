@@ -16,25 +16,18 @@
  */
 package cz.cuni.mff.d3s.spl.interpretation;
 
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRunSummary;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRunUtils;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
+import cz.cuni.mff.d3s.spl.utils.DistributionUtils;
+import cz.cuni.mff.d3s.spl.utils.StatisticsUtils;
+import org.apache.commons.math3.distribution.RealDistribution;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
-
-import org.apache.commons.math3.distribution.RealDistribution;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunSummary;
-import cz.cuni.mff.d3s.spl.data.BenchmarkRunUtils;
-import cz.cuni.mff.d3s.spl.utils.DistributionUtils;
-import cz.cuni.mff.d3s.spl.utils.StatisticsUtils;
+import java.util.concurrent.*;
 
 
 /** Parallel implementation of the DistributionLearningInterpretation.

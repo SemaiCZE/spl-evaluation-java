@@ -1,6 +1,6 @@
 package cz.cuni.mff.d3s.spl.utils;
 
-import cz.cuni.mff.d3s.spl.DataSource;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 import cz.cuni.mff.d3s.spl.data.Revision;
 
 import java.util.HashMap;

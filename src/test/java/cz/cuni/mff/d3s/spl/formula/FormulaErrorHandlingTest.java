@@ -16,12 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
+import cz.cuni.mff.d3s.spl.data.DataSource;
+import cz.cuni.mff.d3s.spl.tests.DataForTest;
 import org.junit.Before;
 import org.junit.Test;
-
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.tests.DataForTest;
 
 public class FormulaErrorHandlingTest {
 	

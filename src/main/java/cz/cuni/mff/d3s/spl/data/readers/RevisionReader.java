@@ -1,7 +1,7 @@
 package cz.cuni.mff.d3s.spl.data.readers;
 
-import cz.cuni.mff.d3s.spl.DataReader;
-import cz.cuni.mff.d3s.spl.DataSource;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 
 import java.io.File;
 import java.util.Map;
@@ -26,7 +26,7 @@ public interface RevisionReader {
 	 * @param files Input files with raw data
 	 * @return Processed data as a map grouped by benchmark/method/...
 	 *          If there is no info about name in the data, "default"
-	 *          key is used instead.
+	 *          identifier is used instead.
 	 */
-	Map<String, DataSource> readRevision(File... files) throws DataReader.ReaderException;
+	Map<DataInfo, DataSource> readRevision(File... files) throws DataReader.ReaderException;
 }

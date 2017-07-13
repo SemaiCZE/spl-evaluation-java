@@ -16,12 +16,12 @@
  */
 package cz.cuni.mff.d3s.spl.utils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
 
 public class ArrayUtilsTest {
 	private static final double EPSILON = 0.00001;

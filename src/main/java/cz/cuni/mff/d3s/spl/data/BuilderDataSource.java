@@ -16,9 +16,6 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.DataSource;
-
 /** Utility class to read data from streams.
  *
  */

@@ -16,19 +16,20 @@
  */
 package cz.cuni.mff.d3s.spl.demo;
 
+import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader;
+import cz.cuni.mff.d3s.spl.data.readers.LineOrientedRevisionReader;
+import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
+import cz.cuni.mff.d3s.spl.formula.Formula;
+import cz.cuni.mff.d3s.spl.formula.SplFormula;
+import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import cz.cuni.mff.d3s.spl.DataReader;
-import cz.cuni.mff.d3s.spl.data.readers.RevisionReader;
-import cz.cuni.mff.d3s.spl.DataSource;
-import cz.cuni.mff.d3s.spl.Formula;
-import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.data.readers.LineOrientedRevisionReader;
-import cz.cuni.mff.d3s.spl.formula.SplFormula;
-import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
 
 /** Detect performance regressions from already measured data.
  * 
@@ -64,7 +65,7 @@ public class DirectoryBasedRegressionTester {
 			System.out.printf("Reading data from %s...", dirname);
 
 			RevisionReader reader = new LineOrientedRevisionReader();
-			Map<String, DataSource> data = null;
+			Map<DataInfo, DataSource> data = null;
 			try {
 				data = reader.readRevision(dir.listFiles());
 			} catch (DataReader.ReaderException e) {
@@ -72,9 +73,9 @@ public class DirectoryBasedRegressionTester {
 				System.exit(2);
 			}
 
-			System.out.printf(" ok, %d run(s).\n", data.get("default").makeSnapshot().getRunCount());
+			System.out.printf(" ok, %d run(s).\n", data.get(DataInfo.defaultInstance).makeSnapshot().getRunCount());
 			
-			datas.add(new Revision(dir.getName(), data.get("default")));
+			datas.add(new Revision(dir.getName(), data.get(DataInfo.defaultInstance)));
 		}
 		
 		Formula improved = SplFormula.create("new < old");

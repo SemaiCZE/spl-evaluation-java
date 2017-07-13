@@ -16,11 +16,10 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
+import cz.cuni.mff.d3s.spl.utils.PrimitiveIterables;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.utils.PrimitiveIterables;
 
 /** Immutable implementation of BenchmarkRun that makes and returns
  * always copy of the initial data.

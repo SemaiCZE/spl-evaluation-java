@@ -19,8 +19,6 @@ package cz.cuni.mff.d3s.spl.data;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-
 /** Statistical summary of a benchmark run.
  * 
  * <p>

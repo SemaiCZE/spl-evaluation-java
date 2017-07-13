@@ -16,17 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.interpretation;
 
-import static org.junit.Assert.assertEquals;
-
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
+import cz.cuni.mff.d3s.spl.data.DataSnapshotBuilder;
+import cz.cuni.mff.d3s.spl.data.ImmutableBenchmarkRun;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.Interpretation;
-import cz.cuni.mff.d3s.spl.data.DataSnapshotBuilder;
-import cz.cuni.mff.d3s.spl.data.ImmutableBenchmarkRun;
+import static org.junit.Assert.assertEquals;
 
 public class WelchTestWithEnlargedVariancesInterpretationTest {
 	private static final double EPSILON = 0.00001;

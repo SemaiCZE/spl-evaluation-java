@@ -1,7 +1,6 @@
 package cz.cuni.mff.d3s.spl.restapi.factories;
 
 import cz.cuni.mff.d3s.spl.restapi.TestsApiService;
-import cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
 
 public class TestsApiServiceFactory {
     private static TestsApiService service = null;

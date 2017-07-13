@@ -16,11 +16,11 @@
  */
 package cz.cuni.mff.d3s.spl.utils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Collection;
 
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
 
 public class RingBufferTest {
 	private static final Integer[] INTEGER_ARRAY_TYPE = new Integer[0];

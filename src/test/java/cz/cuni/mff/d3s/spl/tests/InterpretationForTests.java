@@ -16,12 +16,11 @@
  */
 package cz.cuni.mff.d3s.spl.tests;
 
-import org.junit.Ignore;
-
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.Interpretation;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
+import cz.cuni.mff.d3s.spl.interpretation.ComparisonResult;
+import cz.cuni.mff.d3s.spl.interpretation.Interpretation;
 import cz.cuni.mff.d3s.spl.interpretation.KindergartenInterpretation;
+import org.junit.Ignore;
 
 @Ignore
 public class InterpretationForTests implements Interpretation {

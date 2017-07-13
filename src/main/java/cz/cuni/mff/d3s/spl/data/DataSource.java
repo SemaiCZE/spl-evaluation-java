@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.cuni.mff.d3s.spl;
+package cz.cuni.mff.d3s.spl.data;
 
 /** Provides access to series of a performance data.
  * 

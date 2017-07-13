@@ -1,9 +1,13 @@
 package cz.cuni.mff.d3s.spl;
 
 
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 import cz.cuni.mff.d3s.spl.data.Revision;
+import cz.cuni.mff.d3s.spl.data.readers.DataReader;
 import cz.cuni.mff.d3s.spl.data.readers.JmhJsonRevisionReader;
 import cz.cuni.mff.d3s.spl.data.readers.StructuredDataReader;
+import cz.cuni.mff.d3s.spl.formula.Formula;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
 import cz.cuni.mff.d3s.spl.restapi.TestsApi;
@@ -49,7 +53,7 @@ public class Main {
 			readCommandlineFormulas(formulas, cmdFormulas);
 
 			DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
-			Map<String, List<Revision>> data = reader.readData(new String[]{dataDir});
+			Map<DataInfo, List<Revision>> data = reader.readData(new String[]{dataDir});
 
 			if (startServer) {
 				// Start REST API server to allow fetching data from visualization tools
@@ -61,8 +65,8 @@ public class Main {
 				// Get custom mapping of revisions form file.
 				Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
 
-				for (Map.Entry<String, List<Revision>> benchmarkItem : data.entrySet()) {
-					String benchmarkName = benchmarkItem.getKey();
+				for (Map.Entry<DataInfo, List<Revision>> benchmarkItem : data.entrySet()) {
+					String benchmarkName = benchmarkItem.getKey().getId();
 					String formulaString = null;
 
 					// Wildcard method identifier for all methods

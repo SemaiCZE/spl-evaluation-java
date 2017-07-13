@@ -16,15 +16,14 @@
  */
 package cz.cuni.mff.d3s.spl.formula;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 import cz.cuni.mff.d3s.spl.Result;
-import cz.cuni.mff.d3s.spl.formula.Comparison;
 import cz.cuni.mff.d3s.spl.formula.Comparison.Operator;
 import cz.cuni.mff.d3s.spl.tests.DataForTest;
 import cz.cuni.mff.d3s.spl.tests.InterpretationForTests;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ComparisonTest {
 

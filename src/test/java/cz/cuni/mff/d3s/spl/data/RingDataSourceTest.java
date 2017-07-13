@@ -16,9 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.data;
 
-import org.junit.Test;
-
 import cz.cuni.mff.d3s.spl.tests.TestUtils;
+import org.junit.Test;
 
 public class RingDataSourceTest {	
 	

@@ -16,10 +16,8 @@
  */
 package cz.cuni.mff.d3s.spl.interpretation;
 
-import cz.cuni.mff.d3s.spl.BenchmarkRun;
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-import cz.cuni.mff.d3s.spl.DataSnapshot;
-import cz.cuni.mff.d3s.spl.Interpretation;
+import cz.cuni.mff.d3s.spl.data.BenchmarkRun;
+import cz.cuni.mff.d3s.spl.data.DataSnapshot;
 
 /** Primitive interpretation that merely compares arithmetic means.
  *

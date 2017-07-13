@@ -1,6 +1,7 @@
 package cz.cuni.mff.d3s.spl.data.readers;
 
-import cz.cuni.mff.d3s.spl.*;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
+import cz.cuni.mff.d3s.spl.data.DataSource;
 import cz.cuni.mff.d3s.spl.data.Revision;
 import cz.cuni.mff.d3s.spl.utils.Factory;
 
@@ -41,12 +42,12 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 	 *          unit as value.
 	 */
 	@Override
-	public Map<String, List<Revision>> readData(String[] args) throws ReaderException {
+	public Map<DataInfo, List<Revision>> readData(String[] args) throws ReaderException {
 		if (args.length != 1) {
 			throw new ReaderException("Invalid number of arguments - expected: 1, provided: " + args.length);
 		}
 
-		Map<String, List<Revision>> data = new HashMap<>();
+		Map<DataInfo, List<Revision>> data = new HashMap<>();
 
 		File dir = new File(args[0]);
 		File[] files = dir.listFiles();
@@ -59,9 +60,9 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 		for (File file : files) {
 			System.out.printf("Reading data from %s revision...", file.getName());
 
-			Map<String, DataSource> revisionData = reader.readRevision(file);
+			Map<DataInfo, DataSource> revisionData = reader.readRevision(file);
 
-			for (Map.Entry<String, DataSource> benchmark : revisionData.entrySet()) {
+			for (Map.Entry<DataInfo, DataSource> benchmark : revisionData.entrySet()) {
 				if (!data.containsKey(benchmark.getKey())) {
 					data.put(benchmark.getKey(), new LinkedList<>());
 				}

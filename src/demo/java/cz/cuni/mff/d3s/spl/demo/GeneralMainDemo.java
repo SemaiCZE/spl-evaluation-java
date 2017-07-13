@@ -1,10 +1,10 @@
 package cz.cuni.mff.d3s.spl.demo;
 
-import cz.cuni.mff.d3s.spl.DataReader;
-import cz.cuni.mff.d3s.spl.Formula;
 import cz.cuni.mff.d3s.spl.Result;
+import cz.cuni.mff.d3s.spl.data.DataInfo;
 import cz.cuni.mff.d3s.spl.data.Revision;
 import cz.cuni.mff.d3s.spl.data.readers.*;
+import cz.cuni.mff.d3s.spl.formula.Formula;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
 
@@ -39,7 +39,7 @@ public class GeneralMainDemo {
 	 *             be changed in future.
 	 */
 	public static void main(String[] args) {
-		Map<String, List<Revision>> data = null;
+		Map<DataInfo, List<Revision>> data = null;
 
 		try {
 			DataReader reader = getDataReader(DataReaderType.JmhJson);
@@ -57,8 +57,8 @@ public class GeneralMainDemo {
 		System.out.printf("Looking for regressions and suspicious data...\n");
 
 		// for each test method
-		for (Map.Entry<String, List<Revision>> benchmark : data.entrySet()) {
-			System.out.printf(" benchmark: %s...\n", benchmark.getKey());
+		for (Map.Entry<DataInfo, List<Revision>> benchmark : data.entrySet()) {
+			System.out.printf(" benchmark: %s...\n", benchmark.getKey().getId());
 
 			// for each pair of following measurements check regression
 			List<Revision> revisions = benchmark.getValue();

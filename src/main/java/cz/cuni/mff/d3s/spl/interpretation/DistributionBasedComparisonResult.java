@@ -18,8 +18,6 @@ package cz.cuni.mff.d3s.spl.interpretation;
 
 import org.apache.commons.math3.distribution.RealDistribution;
 
-import cz.cuni.mff.d3s.spl.ComparisonResult;
-
 /** Data set comparison result that uses probability distributions.
  */
 public class DistributionBasedComparisonResult implements ComparisonResult {
