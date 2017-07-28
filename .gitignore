@@ -3,5 +3,6 @@
 .idea/
 target/
 dependency-reduced-pom.xml
+spl-evaluation-java.iml
 api-doc/data_server/
 

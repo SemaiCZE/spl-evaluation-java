@@ -8,7 +8,7 @@ info:
   license:
     name: MIT license
     url: 'https://opensource.org/licenses/MIT'
-host: 'localhost:8001'
+host: 'localhost:42000'
 basePath: /
 tags:
   - name: data
@@ -44,7 +44,11 @@ paths:
         - data
       operationId: getRevisions
       summary: List of different measurement versions in specific test
-      description: Returns list of different measurements for specific test
+      description: >-
+        Returns list of different measurements for specific test. The versions
+        are returned from oldest to newest according to version timestamp.
+        If the timestamps matches, resulting order is from lexicographical
+        comparison of version ids.
       produces:
         - application/json
       parameters:
@@ -59,13 +63,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              description: Unique version identifier
-              example: ver-2017-05-19
-            example:
-              - ver-2017-05-19
-              - ver-2017-05-22
-              - ver-last
+              $ref: '#/definitions/Version'
         '404':
           description: Test not found
         '500':
@@ -121,6 +119,24 @@ definitions:
         additionalProperties:
           type: string
           description: Key-value data
+  Version:
+      type: object
+      required:
+        - id
+        - timestamp
+      properties:
+        id:
+          type: string
+          description: Unique version identifier, usually
+          example: 1501159669-7649a1c363f58f732b0503130ea93f0ef0719e15
+        timestamp:
+          type: integer
+          format: int64
+          description: >-
+            Version timestamp, usually creation time of measured commit. Used
+            format is Unix timestamp (number of seconds elapsed since
+            January 1, 1970). If the timestamp is unknown, 0 is returned.
+          example: 1501159669
   Data:
     type: object
     required:

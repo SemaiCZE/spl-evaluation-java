@@ -62,11 +62,13 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 
 			Map<DataInfo, DataSource> revisionData = reader.readRevision(file);
 
+			long timestamp = getTimestampFromName(file.getName());
+
 			for (Map.Entry<DataInfo, DataSource> benchmark : revisionData.entrySet()) {
 				if (!data.containsKey(benchmark.getKey())) {
-					data.put(benchmark.getKey(), new LinkedList<>());
+					data.put(benchmark.getKey(), new ArrayList<>());
 				}
-				data.get(benchmark.getKey()).add(new Revision(file.getName(), benchmark.getValue()));
+				data.get(benchmark.getKey()).add(new Revision(file.getName(), timestamp, benchmark.getValue()));
 			}
 
 			System.out.println(" ok");
@@ -76,28 +78,41 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 	}
 
 	/**
-	 * Compare files by their filesystem modification time. Newer file
-	 * is less than older file.
+	 * Function for parsing strings in format <timestamp>-<identifier>,
+	 * for example '1501159669-7649a1c363f58f732b0503130ea93f0ef0719e15'
+	 * @param name String to be parsed
+	 * @return Parsed timestamp or 0 on parsing errors
 	 */
-//	private static class FileComparator implements Comparator<File> {
-//		@Override
-//		public int compare(File x, File y) {
-//			long xModified = x.lastModified();
-//			long yModified = y.lastModified();
-//
-//			if (xModified == yModified) {
-//				return 0;
-//			} else if (xModified > yModified) {
-//				return 1;
-//			} else {
-//				return -1;
-//			}
-//		}
-//	}
+	private static long getTimestampFromName(String name) {
+		long timestamp = 0;
+		int dashIndex = name.indexOf('-');
+		if (dashIndex == -1) {
+			return timestamp;
+		}
+		String namePrefix = name.substring(0, dashIndex);
+		try {
+			timestamp = Long.parseLong(namePrefix);
+		} catch (NumberFormatException ignored) {}
+
+		return timestamp;
+	}
+
+	/**
+	 * Compare files by timestamps parsed from their names. When the timestamps are equal,
+	 * compare lexicographically their names.
+	 */
 	private static class FileComparator implements Comparator<File> {
 		@Override
 		public int compare(File x, File y) {
-			return x.getName().compareTo(y.getName());
+			long xTimestamp = getTimestampFromName(x.getName());
+			long yTimestamp = getTimestampFromName(y.getName());
+
+			long timestampDiff = xTimestamp - yTimestamp;
+			if (timestampDiff != 0) {
+				return timestampDiff > 0 ? 1 : -1;
+			} else {
+				return x.getName().compareTo(y.getName());
+			}
 		}
 	}
 }
