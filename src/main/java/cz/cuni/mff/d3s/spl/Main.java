@@ -10,6 +10,7 @@ import cz.cuni.mff.d3s.spl.data.readers.StructuredDataReader;
 import cz.cuni.mff.d3s.spl.formula.Formula;
 import cz.cuni.mff.d3s.spl.formula.SplFormula;
 import cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
+import cz.cuni.mff.d3s.spl.restapi.CorsInterceptor;
 import cz.cuni.mff.d3s.spl.restapi.TestsApi;
 import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
 import cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
@@ -59,6 +60,7 @@ public class Main {
 				// Start REST API server to allow fetching data from visualization tools
 				TestsApiServiceFactory.setService(new TestsApiServiceImpl(data));
 				new MicroservicesRunner(42000)
+						.addInterceptor(new CorsInterceptor())
 						.deploy(new TestsApi())
 						.start();
 			} else {
