@@ -7,6 +7,7 @@ import cz.cuni.mff.d3s.spl.restapi.TestsApiService;
 import cz.cuni.mff.d3s.spl.utils.DataUtils;
 import io.swagger.model.Data;
 import io.swagger.model.Test;
+import io.swagger.model.Version;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class TestsApiServiceImpl extends TestsApiService {
     public Response getRevisions(String testId) throws NotFoundException {
         DataInfo testInfo = new DataInfo(testId);
         if (data.containsKey(testInfo)) {
-            List<String> response = new ArrayList<>();
+            List<Version> response = new ArrayList<>();
             for (Revision r : data.get(testInfo)) {
-                response.add(r.name);
+                response.add(new Version().id(r.name).timestamp(r.timestamp));
             }
             return Response.ok().entity(new ApiResponse(Response.Status.OK.getStatusCode(), response)).build();
         } else {

@@ -1,6 +1,6 @@
-package cz.cuni.mff.d3s.spl.restapi;
+package cz.cuni.mff.d3s.spl;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaMSF4JServerCodegen", date = "2017-07-11T18:20:29.625+02:00")
+
 public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).

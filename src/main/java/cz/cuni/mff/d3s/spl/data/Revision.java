@@ -11,6 +11,11 @@ public class Revision {
 	public String name;
 
 	/**
+	 * Unix timestamp of the revision or 0 if the timestamp is unknown.
+	 */
+	public long timestamp;
+
+	/**
 	 * Data for given revision.
 	 */
 	public DataSource data;
@@ -19,10 +24,22 @@ public class Revision {
 	 * Constructor.
 	 *
 	 * @param n Name of the revision.
+	 * @param t Unix timestamp of the revision.
+	 * @param d Revision data.
+	 */
+	public Revision(String n, long t, DataSource d) {
+		name = n;
+		timestamp = t;
+		data = d;
+	}
+
+	/**
+	 * Constructor with unknown timestamp.
+	 *
+	 * @param n Name of the revision.
 	 * @param d Revision data.
 	 */
 	public Revision(String n, DataSource d) {
-		name = n;
-		data = d;
+		this(n, 0, d);
 	}
 }

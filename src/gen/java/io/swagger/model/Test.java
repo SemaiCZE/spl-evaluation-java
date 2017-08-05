@@ -1,16 +1,18 @@
 package io.swagger.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Test
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaMSF4JServerCodegen", date = "2017-07-12T12:01:17.872+02:00")
+
 public class Test   {
   @JsonProperty("id")
   private String id = null;
@@ -69,7 +71,7 @@ public class Test   {
 
    /**
    * Optional test metadata (execution parameters, etc.)
-   * @return optional
+   * @return metadata
   **/
   @ApiModelProperty(value = "Optional test metadata (execution parameters, etc.)")
   public Map<String, String> getMetadata() {

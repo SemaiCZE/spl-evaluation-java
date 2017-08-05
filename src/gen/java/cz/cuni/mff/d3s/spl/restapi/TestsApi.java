@@ -1,21 +1,34 @@
 package cz.cuni.mff.d3s.spl.restapi;
 
+import io.swagger.model.*;
+import cz.cuni.mff.d3s.spl.restapi.TestsApiService;
 import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
+
 import io.swagger.annotations.ApiParam;
+import io.swagger.jaxrs.*;
+
 import io.swagger.model.Data;
 import io.swagger.model.Test;
+import io.swagger.model.Version;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import java.util.List;
+import cz.cuni.mff.d3s.spl.restapi.NotFoundException;
+
+import java.io.InputStream;
+
+import org.wso2.msf4j.formparam.FormDataParam;
+import org.wso2.msf4j.formparam.FileInfo;
+
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.*;
 
 @Path("/tests")
 
 
 @io.swagger.annotations.Api(description = "the tests API")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaMSF4JServerCodegen", date = "2017-07-11T18:20:29.625+02:00")
+
 public class TestsApi  {
    private final TestsApiService delegate = TestsApiServiceFactory.getTestsApi();
 
@@ -40,13 +53,13 @@ public class TestsApi  {
     @Path("/{testId}/revisions")
     
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "List of different measurement versions in specific test", notes = "Returns list of different measurements for specific test", response = String.class, responseContainer = "List", tags={ "data", })
+    @io.swagger.annotations.ApiOperation(value = "List of different measurement versions in specific test", notes = "Returns list of different measurements for specific test. The versions are returned from oldest to newest according to version timestamp. If the timestamps matches, resulting order is from lexicographical comparison of version ids.", response = Version.class, responseContainer = "List", tags={ "data", })
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "Success", response = String.class, responseContainer = "List"),
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Success", response = Version.class, responseContainer = "List"),
         
-        @io.swagger.annotations.ApiResponse(code = 404, message = "Test not found", response = String.class, responseContainer = "List"),
+        @io.swagger.annotations.ApiResponse(code = 404, message = "Test not found", response = Version.class, responseContainer = "List"),
         
-        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error", response = String.class, responseContainer = "List") })
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error", response = Version.class, responseContainer = "List") })
     public Response getRevisions(@ApiParam(value = "ID of test (one of `id` fields from `/tests` endpoint)",required=true) @PathParam("testId") String testId
 )
     throws NotFoundException {
