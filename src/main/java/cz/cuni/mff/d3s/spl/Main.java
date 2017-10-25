@@ -15,15 +15,20 @@ import cz.cuni.mff.d3s.spl.restapi.TestsApi;
 import cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
 import cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
 import cz.cuni.mff.d3s.spl.utils.DataUtils;
+import cz.cuni.mff.d3s.spl.visualization.WebVisualizer;
 import org.apache.commons.cli.*;
 import org.wso2.msf4j.MicroservicesRunner;
 
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 
 
 public class Main {
@@ -62,7 +67,11 @@ public class Main {
 				new MicroservicesRunner(42000)
 						.addInterceptor(new CorsInterceptor())
 						.deploy(new TestsApi())
+						.deploy(new WebVisualizer())
 						.start();
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().browse(new URI("http://localhost:42000/index.html"));
+				}
 			} else {
 				// Get custom mapping of revisions form file.
 				Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
@@ -130,6 +139,8 @@ public class Main {
 			printHelp(options);
 		} catch (DataReader.ReaderException e) {
 			System.err.println("Cannot read measured data. Reason: " + e.getMessage());
+		} catch (IOException | URISyntaxException e) {
+			System.err.println("Cannot open your default browser. Reason: " + e.getMessage());
 		}
 	}
 
