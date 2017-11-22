@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>RevisionReader xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/cz/cuni/mff/d3s/spl/data/readers/RevisionReader.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> cz.cuni.mff.d3s.spl.data.readers;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.DataInfo;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.DataSource;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Provides unified interface to read data revision from files.</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * Each implementation will specify it's semantics in detail,</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * but common idea is that each reader processes data from</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * given file(s) and returns them as a map with method/benchmark</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * name as a key and data as a value.</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../../../../cz/cuni/mff/d3s/spl/data/readers/RevisionReader.html">RevisionReader</a> {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">	 * Read one revision of data from given files. There shouldn't be</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">	 * more revisions of the same benchmark/method/... data in one file</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment">	 * or you shouldn't pass multiple files containing the same data with</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment">	 * different revisions.</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment">	 *</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment">	 * @param files Input files with raw data</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">	 * @return Processed data as a map grouped by benchmark/method/...</em>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">	 *          If there is no info about name in the data, "default"</em>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">	 *          identifier is used instead.</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  	Map&lt;DataInfo, DataSource&gt; readRevision(File... files) <strong class="jxr_keyword">throws</strong> DataReader.ReaderException;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017 <a href="http://d3s.mff.cuni.cz">D3S MFF, Charles University in Prague</a>. All rights reserved.</div>
+</body>
+</html>

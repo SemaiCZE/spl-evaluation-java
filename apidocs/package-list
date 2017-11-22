@@ -1,0 +1,11 @@
+cz.cuni.mff.d3s.spl
+cz.cuni.mff.d3s.spl.data
+cz.cuni.mff.d3s.spl.data.readers
+cz.cuni.mff.d3s.spl.formula
+cz.cuni.mff.d3s.spl.interpretation
+cz.cuni.mff.d3s.spl.restapi
+cz.cuni.mff.d3s.spl.restapi.factories
+cz.cuni.mff.d3s.spl.restapi.impl
+cz.cuni.mff.d3s.spl.utils
+cz.cuni.mff.d3s.spl.visualization
+io.swagger.model

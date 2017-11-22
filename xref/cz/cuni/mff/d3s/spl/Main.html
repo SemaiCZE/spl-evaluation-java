@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Main xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../apidocs/cz/cuni/mff/d3s/spl/Main.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> cz.cuni.mff.d3s.spl;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.DataInfo;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.DataSource;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.Revision;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.readers.DataReader;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.readers.JmhJsonRevisionReader;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.data.readers.StructuredDataReader;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.formula.Formula;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.formula.SplFormula;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.interpretation.WelchTestInterpretation;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.restapi.CorsInterceptor;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.restapi.TestsApi;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.restapi.factories.TestsApiServiceFactory;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.restapi.impl.TestsApiServiceImpl;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.utils.DataUtils;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> cz.cuni.mff.d3s.spl.visualization.WebVisualizer;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.cli.*;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.wso2.msf4j.MicroservicesRunner;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.awt.*;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.io.*;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.net.URISyntaxException;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Paths;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.*;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../cz/cuni/mff/d3s/spl/Main.html">Main</a> {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> SIGNIFICANCE_LEVEL = 0.95;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  		CommandLineParser parser = <strong class="jxr_keyword">new</strong> DefaultParser();
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  		Options options = createOptions();
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  			CommandLine line = parser.parse(options, args);
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  			String jarFormulas = line.getOptionValue(<span class="jxr_string">"jar-formulas"</span>);
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  			String fileFormulas = line.getOptionValue(<span class="jxr_string">"file-formulas"</span>);
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  			String[] cmdFormulas = line.getOptionValues(<span class="jxr_string">"commandline-formulas"</span>);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  			String dataDir = line.getOptionValue(<span class="jxr_string">"data-dir"</span>);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  			String revisionMapping = line.getOptionValue(<span class="jxr_string">"revision-mapping"</span>);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  			<strong class="jxr_keyword">boolean</strong> printUnknownOnly = line.hasOption(<span class="jxr_string">"print-unknown"</span>);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  			<strong class="jxr_keyword">boolean</strong> startServer = line.hasOption(<span class="jxr_string">"server"</span>);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  			<em class="jxr_comment">// Formulas are processed in order jar, file and command line.</em>
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  			<em class="jxr_comment">// Latter options have higher priority and will override previous values.</em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  			<em class="jxr_comment">// Pair of FQ benchmark name and corresponding SPL formula.</em>
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  			Map&lt;String, String&gt; formulas = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  			readJarFormulas(formulas, jarFormulas);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  			readFileFormulas(formulas, fileFormulas);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  			readCommandlineFormulas(formulas, cmdFormulas);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  			DataReader reader = <strong class="jxr_keyword">new</strong> StructuredDataReader&lt;&gt;(<strong class="jxr_keyword">new</strong> JmhJsonRevisionReader.RevisionFactory());
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  			Map&lt;DataInfo, List&lt;Revision&gt;&gt; data = reader.readData(<strong class="jxr_keyword">new</strong> String[]{dataDir});
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  			<strong class="jxr_keyword">if</strong> (startServer) {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  				<em class="jxr_comment">// Start REST API server to allow fetching data from visualization tools</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  				TestsApiServiceFactory.setService(<strong class="jxr_keyword">new</strong> <a href="../../../../../cz/cuni/mff/d3s/spl/restapi/impl/TestsApiServiceImpl.html">TestsApiServiceImpl</a>(data));
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  				<strong class="jxr_keyword">new</strong> MicroservicesRunner(42000)
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  						.addInterceptor(<strong class="jxr_keyword">new</strong> <a href="../../../../../cz/cuni/mff/d3s/spl/restapi/CorsInterceptor.html">CorsInterceptor</a>())
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  						.deploy(<strong class="jxr_keyword">new</strong> TestsApi())
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  						.deploy(<strong class="jxr_keyword">new</strong> <a href="../../../../../cz/cuni/mff/d3s/spl/visualization/WebVisualizer.html">WebVisualizer</a>())
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  						.start();
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>  				<strong class="jxr_keyword">if</strong> (Desktop.isDesktopSupported()) {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  					Desktop.getDesktop().browse(<strong class="jxr_keyword">new</strong> URI(<span class="jxr_string">"http://localhost:42000/index.html"</span>));
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  				}
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  			} <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  				<em class="jxr_comment">// Get custom mapping of revisions form file.</em>
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>  				Map&lt;String, String&gt; customRevisionMap = getCustomRevisionMapping(revisionMapping);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  				<strong class="jxr_keyword">for</strong> (Map.Entry&lt;DataInfo, List&lt;Revision&gt;&gt; benchmarkItem : data.entrySet()) {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  					String benchmarkName = benchmarkItem.getKey().getId();
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>  					String formulaString = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>  					<em class="jxr_comment">// Wildcard method identifier for all methods</em>
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  					<strong class="jxr_keyword">if</strong> (formulas.containsKey(<span class="jxr_string">"*"</span>)) {
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  						formulaString = formulas.get(<span class="jxr_string">"*"</span>);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>  					}
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>  					<em class="jxr_comment">// Method fully qualified name without additional params</em>
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>  					String benchmarkBasename = benchmarkName.substring(0, benchmarkName.indexOf('@'));
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  					<strong class="jxr_keyword">if</strong> (formulas.containsKey(benchmarkBasename)) {
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  						formulaString = formulas.get(benchmarkBasename);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>  					}
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>  					<em class="jxr_comment">// Method fully qualified name including additional info like measurement mode or execution params</em>
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  					<strong class="jxr_keyword">if</strong> (formulas.containsKey(benchmarkName)) {
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>  						formulaString = formulas.get(benchmarkName);
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>  					}
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>  
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>  					<strong class="jxr_keyword">if</strong> (formulaString == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a> 						System.out.println(<span class="jxr_string">"Skipping benchmark without formula: "</span> + benchmarkItem.getKey());
+<a class="jxr_linenumber" name="L101" href="#L101">101</a> 						<strong class="jxr_keyword">continue</strong>;
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> 					}
+<a class="jxr_linenumber" name="L103" href="#L103">103</a> 
+<a class="jxr_linenumber" name="L104" href="#L104">104</a> 					Formula formula = SplFormula.create(formulaString);
+<a class="jxr_linenumber" name="L105" href="#L105">105</a> 					formula.setInterpretation(<strong class="jxr_keyword">new</strong> <a href="../../../../../cz/cuni/mff/d3s/spl/interpretation/WelchTestInterpretation.html">WelchTestInterpretation</a>());
+<a class="jxr_linenumber" name="L106" href="#L106">106</a> 
+<a class="jxr_linenumber" name="L107" href="#L107">107</a> 					<em class="jxr_comment">// get benchmark's revisions in better format for us</em>
+<a class="jxr_linenumber" name="L108" href="#L108">108</a> 					Map&lt;String, DataSource&gt; revisionMap = DataUtils.getRevisionMap(benchmarkItem.getValue());
+<a class="jxr_linenumber" name="L109" href="#L109">109</a> 					<strong class="jxr_keyword">boolean</strong> isUnknown = false;
+<a class="jxr_linenumber" name="L110" href="#L110">110</a> 					<em class="jxr_comment">// Bind variables to formula (according to revisions collection)</em>
+<a class="jxr_linenumber" name="L111" href="#L111">111</a> 					<strong class="jxr_keyword">for</strong> (String variable : formula.getVariables()) {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a> 						<em class="jxr_comment">// try if there is real revision of that name</em>
+<a class="jxr_linenumber" name="L113" href="#L113">113</a> 						<strong class="jxr_keyword">if</strong> (revisionMap.containsKey(variable)) {
+<a class="jxr_linenumber" name="L114" href="#L114">114</a> 							formula.bind(variable, revisionMap.get(variable));
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> 						}
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> 						<em class="jxr_comment">// else try to find another revision is custom mapping</em>
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> 						<strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (customRevisionMap.containsKey(variable)) {
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> 							formula.bind(variable, revisionMap.get(customRevisionMap.get(variable)));
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> 						}
+<a class="jxr_linenumber" name="L120" href="#L120">120</a> 						<em class="jxr_comment">// else there is no such revision</em>
+<a class="jxr_linenumber" name="L121" href="#L121">121</a> 						<strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L122" href="#L122">122</a> 							System.out.printf(<span class="jxr_string">"Benchmark: %s, formula: %s, unknown version: %s\n"</span>, benchmarkName,
+<a class="jxr_linenumber" name="L123" href="#L123">123</a> 									formulaString, variable);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> 							isUnknown = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> 						}
+<a class="jxr_linenumber" name="L126" href="#L126">126</a> 					}
+<a class="jxr_linenumber" name="L127" href="#L127">127</a> 
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> 					<em class="jxr_comment">// if we want only get missing versions, skip formula evaluating</em>
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> 					<em class="jxr_comment">// (or if there are some missing ones, evaluation make no sense)</em>
+<a class="jxr_linenumber" name="L130" href="#L130">130</a> 					<strong class="jxr_keyword">if</strong> (!printUnknownOnly &amp;&amp; !isUnknown) {
+<a class="jxr_linenumber" name="L131" href="#L131">131</a> 						Result result = formula.evaluate(SIGNIFICANCE_LEVEL);
+<a class="jxr_linenumber" name="L132" href="#L132">132</a> 						System.out.printf(<span class="jxr_string">"Benchmark: %s, formula: %s, result: %s\n"</span>, benchmarkName, formulaString, result);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a> 					}
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> 				}
+<a class="jxr_linenumber" name="L135" href="#L135">135</a> 			}
+<a class="jxr_linenumber" name="L136" href="#L136">136</a> 		} <strong class="jxr_keyword">catch</strong> (ParseException e) {
+<a class="jxr_linenumber" name="L137" href="#L137">137</a> 			<em class="jxr_comment">// oops, something went wrong</em>
+<a class="jxr_linenumber" name="L138" href="#L138">138</a> 			System.err.println(<span class="jxr_string">"Parsing failed. Reason: "</span> + e.getMessage());
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> 			printHelp(options);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a> 		} <strong class="jxr_keyword">catch</strong> (DataReader.ReaderException e) {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> 			System.err.println(<span class="jxr_string">"Cannot read measured data. Reason: "</span> + e.getMessage());
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> 		} <strong class="jxr_keyword">catch</strong> (IOException | URISyntaxException e) {
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> 			System.err.println(<span class="jxr_string">"Cannot open your default browser. Reason: "</span> + e.getMessage());
+<a class="jxr_linenumber" name="L144" href="#L144">144</a> 		}
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> 	}
+<a class="jxr_linenumber" name="L146" href="#L146">146</a> 
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> readJarFormulas(Map&lt;String, String&gt; formulas, String jarFormulas) {
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 		<strong class="jxr_keyword">if</strong> (jarFormulas != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L149" href="#L149">149</a> 			<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a> 				File jarFile = <strong class="jxr_keyword">new</strong> File(jarFormulas);
+<a class="jxr_linenumber" name="L151" href="#L151">151</a> 				URL url = <strong class="jxr_keyword">new</strong> URL(<span class="jxr_string">"jar:file:"</span> + jarFile.getAbsolutePath() + <span class="jxr_string">"!/META-INF/SPLFormulas"</span>);
+<a class="jxr_linenumber" name="L152" href="#L152">152</a> 				InputStream is = url.openStream();
+<a class="jxr_linenumber" name="L153" href="#L153">153</a> 				BufferedReader reader = <strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(is));
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> 				String line;
+<a class="jxr_linenumber" name="L155" href="#L155">155</a> 				List&lt;String&gt; lines = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L156" href="#L156">156</a> 				<strong class="jxr_keyword">while</strong> ((line = reader.readLine()) != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> 					lines.add(line);
+<a class="jxr_linenumber" name="L158" href="#L158">158</a> 				}
+<a class="jxr_linenumber" name="L159" href="#L159">159</a> 				parseStringsIntoMap(lines, formulas);
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> 			} <strong class="jxr_keyword">catch</strong> (IOException | NullPointerException e) {
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> 				System.err.println(<span class="jxr_string">"Cannot read SPL formulas from JAR, assuming no formulas."</span>);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> 			}
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> 		}
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> 	}
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> 
+<a class="jxr_linenumber" name="L166" href="#L166">166</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> readFileFormulas(Map&lt;String, String&gt; formulas, String fileFormulas) {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> 		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> 			List&lt;String&gt; lines = Files.readAllLines(Paths.get(fileFormulas), StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> 			parseStringsIntoMap(lines, formulas);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a> 		} <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a> 			System.err.println(<span class="jxr_string">"Cannot read SPL formulas from file, assuming empty one."</span>);
+<a class="jxr_linenumber" name="L172" href="#L172">172</a> 		} <strong class="jxr_keyword">catch</strong> (NullPointerException e) {
+<a class="jxr_linenumber" name="L173" href="#L173">173</a> 			<em class="jxr_comment">// there is no such formula file</em>
+<a class="jxr_linenumber" name="L174" href="#L174">174</a> 		}
+<a class="jxr_linenumber" name="L175" href="#L175">175</a> 	}
+<a class="jxr_linenumber" name="L176" href="#L176">176</a> 
+<a class="jxr_linenumber" name="L177" href="#L177">177</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> readCommandlineFormulas(Map&lt;String, String&gt; formulas, String[] cmdFormulas) {
+<a class="jxr_linenumber" name="L178" href="#L178">178</a> 		<strong class="jxr_keyword">if</strong> (cmdFormulas != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a> 			parseStringsIntoMap(cmdFormulas, formulas);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a> 		}
+<a class="jxr_linenumber" name="L181" href="#L181">181</a> 	}
+<a class="jxr_linenumber" name="L182" href="#L182">182</a> 
+<a class="jxr_linenumber" name="L183" href="#L183">183</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> parseStringsIntoMap(String[] data, Map&lt;String, String&gt; output) {
+<a class="jxr_linenumber" name="L184" href="#L184">184</a> 		<strong class="jxr_keyword">for</strong> (String line : data) {
+<a class="jxr_linenumber" name="L185" href="#L185">185</a> 			<em class="jxr_comment">// skip empty lines and comments</em>
+<a class="jxr_linenumber" name="L186" href="#L186">186</a> 			<strong class="jxr_keyword">if</strong> (line.equals(<span class="jxr_string">""</span>) || line.startsWith(<span class="jxr_string">"#"</span>)) {
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 				<strong class="jxr_keyword">continue</strong>;
+<a class="jxr_linenumber" name="L188" href="#L188">188</a> 			}
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> 			String[] parsed = line.split(<span class="jxr_string">":"</span>);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> 			<strong class="jxr_keyword">if</strong> (parsed.length == 2) {
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> 				<em class="jxr_comment">// save only well formed lines</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a> 				output.put(parsed[0], parsed[1]);
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> 			} <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> 				System.err.println(<span class="jxr_string">"Malformed line '"</span> + line + <span class="jxr_string">"'. Exactly one ':' expected."</span>);
+<a class="jxr_linenumber" name="L195" href="#L195">195</a> 			}
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 		}
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> 	}
+<a class="jxr_linenumber" name="L198" href="#L198">198</a> 
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> parseStringsIntoMap(Collection&lt;String&gt; data, Map&lt;String, String&gt; output) {
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> 		parseStringsIntoMap(data.toArray(<strong class="jxr_keyword">new</strong> String[] {}), output);
+<a class="jxr_linenumber" name="L201" href="#L201">201</a> 	}
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> 
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Map&lt;String, String&gt; getCustomRevisionMapping(String revisionsMappingFile) {
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> 		List&lt;String&gt; lines;
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> 		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> 			lines = Files.readAllLines(Paths.get(revisionsMappingFile), StandardCharsets.UTF_8);
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> 			Map&lt;String, String&gt; result = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L208" href="#L208">208</a> 			parseStringsIntoMap(lines, result);
+<a class="jxr_linenumber" name="L209" href="#L209">209</a> 			<strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> 		} <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a> 			System.err.println(<span class="jxr_string">"Cannot read mapping file, assuming empty one."</span>);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> 		} <strong class="jxr_keyword">catch</strong> (NullPointerException e) {
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> 			<em class="jxr_comment">// there is no such mapping file, return empty mapping</em>
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> 		}
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L216" href="#L216">216</a> 	}
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> 
+<a class="jxr_linenumber" name="L218" href="#L218">218</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> printHelp(Options options) {
+<a class="jxr_linenumber" name="L219" href="#L219">219</a> 		String header = <span class="jxr_string">"Evaluate measured data against SPL formulas."</span>;
+<a class="jxr_linenumber" name="L220" href="#L220">220</a> 		String footer = <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L221" href="#L221">221</a> 		HelpFormatter helpFormatter = <strong class="jxr_keyword">new</strong> HelpFormatter();
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> 		helpFormatter.printHelp(<span class="jxr_string">"spl-evaluation-java"</span>, header, options, footer, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L223" href="#L223">223</a> 	}
+<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
+<a class="jxr_linenumber" name="L225" href="#L225">225</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Options createOptions() {
+<a class="jxr_linenumber" name="L226" href="#L226">226</a> 		Options options = <strong class="jxr_keyword">new</strong> Options();
+<a class="jxr_linenumber" name="L227" href="#L227">227</a> 
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> 		options.addOption(Option.builder(<span class="jxr_string">"j"</span>)
+<a class="jxr_linenumber" name="L229" href="#L229">229</a> 				.longOpt(<span class="jxr_string">"jar-formulas"</span>)
+<a class="jxr_linenumber" name="L230" href="#L230">230</a> 				.hasArg()
+<a class="jxr_linenumber" name="L231" href="#L231">231</a> 				.argName(<span class="jxr_string">"benchmarks.jar"</span>)
+<a class="jxr_linenumber" name="L232" href="#L232">232</a> 				.desc(<span class="jxr_string">"Read SPL formulas from JAR file."</span>)
+<a class="jxr_linenumber" name="L233" href="#L233">233</a> 				.build()
+<a class="jxr_linenumber" name="L234" href="#L234">234</a> 		);
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> 
+<a class="jxr_linenumber" name="L236" href="#L236">236</a> 		options.addOption(Option.builder(<span class="jxr_string">"f"</span>)
+<a class="jxr_linenumber" name="L237" href="#L237">237</a> 				.longOpt(<span class="jxr_string">"file-formulas"</span>)
+<a class="jxr_linenumber" name="L238" href="#L238">238</a> 				.hasArg()
+<a class="jxr_linenumber" name="L239" href="#L239">239</a> 				.argName(<span class="jxr_string">"formula_file"</span>)
+<a class="jxr_linenumber" name="L240" href="#L240">240</a> 				.desc(<span class="jxr_string">"Read SPL formulas from text file."</span>)
+<a class="jxr_linenumber" name="L241" href="#L241">241</a> 				.build()
+<a class="jxr_linenumber" name="L242" href="#L242">242</a> 		);
+<a class="jxr_linenumber" name="L243" href="#L243">243</a> 
+<a class="jxr_linenumber" name="L244" href="#L244">244</a> 		options.addOption(Option.builder(<span class="jxr_string">"c"</span>)
+<a class="jxr_linenumber" name="L245" href="#L245">245</a> 				.longOpt(<span class="jxr_string">"commandline-formulas"</span>)
+<a class="jxr_linenumber" name="L246" href="#L246">246</a> 				.hasArgs()
+<a class="jxr_linenumber" name="L247" href="#L247">247</a> 				.argName(<span class="jxr_string">"formulas"</span>)
+<a class="jxr_linenumber" name="L248" href="#L248">248</a> 				.desc(<span class="jxr_string">"Read SPL formulas from commandline arguments."</span>)
+<a class="jxr_linenumber" name="L249" href="#L249">249</a> 				.build()
+<a class="jxr_linenumber" name="L250" href="#L250">250</a> 		);
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> 
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> 		options.addOption(Option.builder(<span class="jxr_string">"d"</span>)
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> 				.longOpt(<span class="jxr_string">"data-dir"</span>)
+<a class="jxr_linenumber" name="L254" href="#L254">254</a> 				.hasArg()
+<a class="jxr_linenumber" name="L255" href="#L255">255</a> 				.argName(<span class="jxr_string">"data_directory"</span>)
+<a class="jxr_linenumber" name="L256" href="#L256">256</a> 				.required()
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> 				.desc(<span class="jxr_string">"Path to directory with measured data."</span>)
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> 				.build()
+<a class="jxr_linenumber" name="L259" href="#L259">259</a> 		);
+<a class="jxr_linenumber" name="L260" href="#L260">260</a> 
+<a class="jxr_linenumber" name="L261" href="#L261">261</a> 		options.addOption(Option.builder(<span class="jxr_string">"r"</span>)
+<a class="jxr_linenumber" name="L262" href="#L262">262</a> 				.longOpt(<span class="jxr_string">"revision-mapping"</span>)
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> 				.hasArg()
+<a class="jxr_linenumber" name="L264" href="#L264">264</a> 				.argName(<span class="jxr_string">"mapping_file"</span>)
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> 				.desc(<span class="jxr_string">"Mapping of formula revisions to file names."</span>)
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> 				.build()
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> 		);
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> 
+<a class="jxr_linenumber" name="L269" href="#L269">269</a> 		options.addOption(Option.builder(<span class="jxr_string">"p"</span>)
+<a class="jxr_linenumber" name="L270" href="#L270">270</a> 				.longOpt(<span class="jxr_string">"print-unknown"</span>)
+<a class="jxr_linenumber" name="L271" href="#L271">271</a> 				.desc(<span class="jxr_string">"Print unknown revisions and exit."</span>)
+<a class="jxr_linenumber" name="L272" href="#L272">272</a> 				.build()
+<a class="jxr_linenumber" name="L273" href="#L273">273</a> 		);
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> 
+<a class="jxr_linenumber" name="L275" href="#L275">275</a> 		options.addOption(Option.builder(<span class="jxr_string">"S"</span>)
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> 				.longOpt(<span class="jxr_string">"server"</span>)
+<a class="jxr_linenumber" name="L277" href="#L277">277</a> 				.desc(<span class="jxr_string">"Start local server for data visualization."</span>)
+<a class="jxr_linenumber" name="L278" href="#L278">278</a> 				.build()
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> 		);
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> 		<strong class="jxr_keyword">return</strong> options;
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> 	}
+<a class="jxr_linenumber" name="L283" href="#L283">283</a> }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017 <a href="http://d3s.mff.cuni.cz">D3S MFF, Charles University in Prague</a>. All rights reserved.</div>
+</body>
+</html>
