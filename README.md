@@ -1,5 +1,9 @@
 # Stochastic Performance Logic evaluation engine
 
+[![Build Status](https://travis-ci.org/SemaiCZE/spl-evaluation-java.svg?branch=master)](https://travis-ci.org/SemaiCZE/spl-evaluation-java)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://semaicze.github.io/spl-evaluation-java/)
+
 Stochastice Performance Logic is a formalism for capturing performance
 assumptions.
 It is, for example, possible to capture assumption that newer version of
