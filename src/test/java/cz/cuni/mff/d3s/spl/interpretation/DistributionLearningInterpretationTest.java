@@ -78,7 +78,7 @@ public class DistributionLearningInterpretationTest  {
 		ComparisonResult result = interpretation.compare(SNAPSHOT_1, SNAPSHOT_2);
 		
 		assertEquals(0.375, result.getStatistic(), EPSILON);
-		assertEquals(ComparisonResult.Relation.GREATER_THAN, result.get(0.2));
+		assertEquals(ComparisonResult.Relation.GREATER_THAN, result.get(0.3));
 	}
 	
 	@Test
@@ -87,13 +87,5 @@ public class DistributionLearningInterpretationTest  {
 		
 		assertEquals(-99.625, result.getStatistic(), EPSILON);
 		assertEquals(ComparisonResult.Relation.LESS_THAN, result.get(0.01));
-	}
-	
-	@Test
-	public void smokeTestForOneSnapshot() {
-		@SuppressWarnings("unused")
-		ComparisonResult result = interpretation.compare(SNAPSHOT_1, 10.);
-		
-		// FIXME - compute
 	}
 }

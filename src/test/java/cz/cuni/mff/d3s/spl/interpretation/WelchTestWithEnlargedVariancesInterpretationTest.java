@@ -65,15 +65,7 @@ public class WelchTestWithEnlargedVariancesInterpretationTest {
 		ComparisonResult result = interpretation.compare(SNAPSHOT_1, SNAPSHOT_2);
 		
 		assertEquals(0.7947194, result.getStatistic(), 0.000001);
-		assertEquals(ComparisonResult.Relation.GREATER_THAN, result.get(0.2));
+		assertEquals(ComparisonResult.Relation.GREATER_THAN, result.get(0.3));
 		assertEquals(-1.281552, result.getCriticalValue(0.1), EPSILON);
-	}
-	
-	@Test
-	public void smokeTestForOneSnapshot() {
-		@SuppressWarnings("unused")
-		ComparisonResult result = interpretation.compare(SNAPSHOT_1, 10.);
-		
-		// FIXME - compute
 	}
 }

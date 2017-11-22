@@ -72,12 +72,4 @@ public class MannWhitneyInterpretationTest  {
 		assertEquals(0.0, result.getStatistic(), 0.001);
 		assertEquals(ComparisonResult.Relation.EQUAL, result.get(0.9));
 	}
-	
-	@Test
-	public void smokeTestForOneSnapshot() {
-		@SuppressWarnings("unused")
-		ComparisonResult result = interpretation.compare(SNAPSHOT_1, 10.);
-		
-		// FIXME - compute
-	}
 }
