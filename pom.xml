@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>cz.cuni.mff.d3s</groupId>
+    <groupId>cz.cuni.mff.d3s.spl</groupId>
     <artifactId>spl-evaluation-java</artifactId>
     <packaging>jar</packaging>
     <name>spl-evaluation-java</name>
@@ -47,6 +47,23 @@
             <url>https://ps.stdin.cz</url>
         </developer>
     </developers>
+
+    <scm>
+      <connection>scm:git:git://github.com/SemaiCZE/spl-mavention-java.git</connection>
+      <developerConnection>scm:git:ssh://github.com/SemaiCZE/spl-evaluation-java.git</developerConnection>
+      <url>https://github.com/SemaiCZE/spl-evaluation-java/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+      <snapshotRepository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
 
     <properties>
         <java.version>1.8</java.version>
@@ -124,7 +141,46 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>2.2.1</version>
+              <executions>
+                <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                    <goal>jar-no-fork</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.9.1</version>
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>1.5</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -147,14 +203,14 @@
                 <configuration>
                     <doctitle>
                         <![CDATA[<h1>
-			        	Stochastic Performance Logic (SPL) evaluation engine</h1>
-				        ]]>
+                        Stochastic Performance Logic (SPL) evaluation engine</h1>
+                        ]]>
                     </doctitle>
                     <bottom>
                         <![CDATA[
-				        <i>Copyright &#169; 2015 — 2017
-				        Charles University in Prague.</i>
-				        ]]>
+                        <i>Copyright &#169; 2015 — 2017
+                        Charles University in Prague.</i>
+                        ]]>
                     </bottom>
                 </configuration>
             </plugin>
