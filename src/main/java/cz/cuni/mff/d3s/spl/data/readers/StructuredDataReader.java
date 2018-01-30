@@ -60,7 +60,14 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 		for (File file : files) {
 			System.out.printf("Reading data from %s revision...", file.getName());
 
-			Map<DataInfo, DataSource> revisionData = reader.readRevision(file);
+			Map<DataInfo, DataSource> revisionData = null;
+			if (file.isDirectory()) {
+				File[] subfiles = file.listFiles();
+				Arrays.sort(subfiles, new FileComparator());
+				revisionData = reader.readRevision(subfiles);
+			} else {
+				revisionData = reader.readRevision(file);
+			}
 
 			long timestamp = getTimestampFromName(file.getName());
 

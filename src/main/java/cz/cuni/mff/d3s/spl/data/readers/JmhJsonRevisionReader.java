@@ -50,8 +50,9 @@ public class JmhJsonRevisionReader implements RevisionReader {
 						DataSource mergedData = mergeBenchmarkData(benchmarkData.getValue(),
 								result.get(benchmarkData.getKey()));
 						result.put(benchmarkData.getKey(), mergedData);
+					} else {
+						result.put(benchmarkData.getKey(), benchmarkData.getValue());
 					}
-					result.put(benchmarkData.getKey(), benchmarkData.getValue());
 				}
 
 			} catch (FileNotFoundException e) {
@@ -81,7 +82,7 @@ public class JmhJsonRevisionReader implements RevisionReader {
 			builder.addRun(newValue.makeSnapshot().getRun(i));
 		}
 
-		return new BuilderDataSource(builder);
+		return new BuilderDataSource(builder, oldValue.getUnits());
 	}
 
 	public static class RevisionFactory implements Factory<JmhJsonRevisionReader> {
