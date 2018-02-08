@@ -60,6 +60,7 @@ public class Main {
 
 			DataReader reader = new StructuredDataReader<>(new JmhJsonRevisionReader.RevisionFactory());
 			Map<DataInfo, List<Revision>> data = reader.readData(new String[]{dataDir});
+			System.out.println();
 
 			if (startServer) {
 				// Start REST API server to allow fetching data from visualization tools
@@ -75,6 +76,9 @@ public class Main {
 			} else {
 				// Get custom mapping of revisions form file.
 				Map<String, String> customRevisionMap = getCustomRevisionMapping(revisionMapping);
+
+				// Flag if there are unknown versions and user should use 'print-unknown' option to show them
+				boolean unknownVersionsPresent = false;
 
 				for (Map.Entry<DataInfo, List<Revision>> benchmarkItem : data.entrySet()) {
 					String benchmarkName = benchmarkItem.getKey().getId();
@@ -97,7 +101,10 @@ public class Main {
 					}
 
 					if (formulaString == null) {
-						System.out.println("Skipping benchmark without formula: " + benchmarkItem.getKey());
+						unknownVersionsPresent = true;
+						if (printUnknownOnly) {
+							System.out.printf("Benchmark: %s\n\tno formula, skipping...\n", benchmarkName);
+						}
 						continue;
 					}
 
@@ -106,7 +113,7 @@ public class Main {
 
 					// get benchmark's revisions in better format for us
 					Map<String, DataSource> revisionMap = DataUtils.getRevisionMap(benchmarkItem.getValue());
-					boolean isUnknown = false;
+					boolean isUnknownForFormula = false;
 					// Bind variables to formula (according to revisions collection)
 					for (String variable : formula.getVariables()) {
 						// try if there is real revision of that name
@@ -119,18 +126,27 @@ public class Main {
 						}
 						// else there is no such revision
 						else {
-							System.out.printf("Benchmark: %s, formula: %s, unknown version: %s\n", benchmarkName,
-									formulaString, variable);
-							isUnknown = true;
+							if (printUnknownOnly) {
+								System.out.printf("Benchmark: %s\n\tformula: %s\n\tunknown version: %s\n", benchmarkName,
+										formulaString, variable);
+							}
+							unknownVersionsPresent = true;
+							isUnknownForFormula = true;
 						}
 					}
 
 					// if we want only get missing versions, skip formula evaluating
 					// (or if there are some missing ones, evaluation make no sense)
-					if (!printUnknownOnly && !isUnknown) {
+					if (!printUnknownOnly && !isUnknownForFormula) {
 						Result result = formula.evaluate(SIGNIFICANCE_LEVEL);
-						System.out.printf("Benchmark: %s, formula: %s, result: %s\n", benchmarkName, formulaString, result);
+						System.out.printf("Benchmark: %s\n\tformula: %s\n\tresult: %s\n", benchmarkName, formulaString,
+								result.toString().toUpperCase());
 					}
+				}
+
+				// when there are unknown versions and we are not displaying them, show the warning
+				if (unknownVersionsPresent && !printUnknownOnly) {
+					System.out.println("\nWARNING: Some formulas refer to unknown versions! To show them use '-p' option");
 				}
 			}
 		} catch (ParseException e) {
