@@ -60,11 +60,13 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 		for (File file : files) {
 			System.out.printf("Reading data from %s revision...", file.getName());
 
-			Map<DataInfo, DataSource> revisionData = null;
+			Map<DataInfo, DataSource> revisionData = new HashMap<>();
 			if (file.isDirectory()) {
 				File[] subfiles = file.listFiles();
-				Arrays.sort(subfiles, new FileComparator());
-				revisionData = reader.readRevision(subfiles);
+				if (subfiles != null && subfiles.length > 0) {
+					Arrays.sort(subfiles, new FileComparator());
+					revisionData = reader.readRevision(subfiles);
+				}
 			} else {
 				revisionData = reader.readRevision(file);
 			}
@@ -85,12 +87,18 @@ public class StructuredDataReader<T extends RevisionReader> implements DataReade
 	}
 
 	/**
-	 * Function for parsing strings in format <timestamp>-<identifier>,
-	 * for example '1501159669-7649a1c363f58f732b0503130ea93f0ef0719e15'
+	 * Function for parsing strings in format v-<timestamp>-<identifier>,
+	 * for example 'v-1501159669-7649a1c363f58f732b0503130ea93f0ef0719e15'
 	 * @param name String to be parsed
 	 * @return Parsed timestamp or 0 on parsing errors
 	 */
 	private static long getTimestampFromName(String name) {
+		// trim the leading 'v-' sequence
+		String prefix = "v-";
+		if (name.startsWith(prefix)) {
+			name = name.substring(prefix.length());
+		}
+
 		long timestamp = 0;
 		int dashIndex = name.indexOf('-');
 		if (dashIndex == -1) {

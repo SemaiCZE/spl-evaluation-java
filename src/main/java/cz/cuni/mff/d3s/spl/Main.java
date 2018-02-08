@@ -49,6 +49,15 @@ public class Main {
 			boolean printUnknownOnly = line.hasOption("print-unknown");
 			boolean startServer = line.hasOption("server");
 
+			// if not set, data directory is default location in ./data dir from current JAR location
+			if (dataDir == null || dataDir.isEmpty()) {
+				String currentJarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				dataDir = Paths.get(
+						currentJarPath.substring(0, currentJarPath.lastIndexOf('/')),
+						"data").toString();
+				System.out.println(dataDir);
+			}
+
 
 			// Formulas are processed in order jar, file and command line.
 			// Latter options have higher priority and will override previous values.
@@ -269,8 +278,7 @@ public class Main {
 				.longOpt("data-dir")
 				.hasArg()
 				.argName("data_directory")
-				.required()
-				.desc("Path to directory with measured data.")
+				.desc("Path to directory with measured data, defaults to 'data/'.")
 				.build()
 		);
 
