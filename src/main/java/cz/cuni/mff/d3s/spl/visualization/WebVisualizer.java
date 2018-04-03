@@ -37,7 +37,11 @@ public class WebVisualizer {
 	private Response serveFile(String fileName) {
 		try {
 			InputStream content = getClass().getResourceAsStream("/cz/cuni/mff/d3s/spl/visualization/" + fileName);
-			return Response.ok().entity(content).build();
+			if (fileName.endsWith(".css")) {
+				return Response.ok().type("text/css").entity(content).build();
+			} else {
+				return Response.ok().entity(content).build();
+			}
 		} catch (NullPointerException e) {
 			return Response.status(404).entity("<h1>Not Found</h1>").build();
 		}
