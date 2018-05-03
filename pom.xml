@@ -7,7 +7,7 @@
     <artifactId>spl-evaluation-java</artifactId>
     <packaging>jar</packaging>
     <name>spl-evaluation-java</name>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <description>
         Stochastice Performance Logic is a formalism for capturing performance
         assumptions. It is, for example, possible to capture assumption that
