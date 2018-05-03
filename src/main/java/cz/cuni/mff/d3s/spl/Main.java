@@ -21,11 +21,13 @@ import org.wso2.msf4j.MicroservicesRunner;
 
 import java.awt.*;
 import java.io.*;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
@@ -51,11 +53,12 @@ public class Main {
 
 			// if not set, data directory is default location in ./data dir from current JAR location
 			if (dataDir == null || dataDir.isEmpty()) {
-				String currentJarPath = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-				dataDir = Paths.get(
-						currentJarPath.substring(0, currentJarPath.lastIndexOf('/')),
-						"data").toString();
-				System.out.println(dataDir);
+				URI fullPath = Main.class.getResource("").toURI();
+				JarURLConnection connection = (JarURLConnection) fullPath.toURL().openConnection();
+				File jarDir = new File(connection.getJarFileURL().toURI());
+				dataDir = Paths.get(jarDir.getPath(), "..", "data").normalize().toString();
+
+				System.out.printf("Used data directory: %s\n", dataDir);
 			}
 
 
